@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 public class Evento {
     private String idEvento;
     private String nombre;
-    private String tipo;     // "charla", "taller", "seminario"
-    private String fecha;    // "2025-09-10"
-    private String hora;     // "14:30"
+    private String tipo;
+    private String fecha;
+    private String hora;
     private String sala;
     private int capacidad;
-
-    private ArrayList<Persona> asistentes; // ahora gestionamos cupos
+    private ArrayList<Persona> asistentes;
+    private ArrayList<Recurso> recursos;
 
     public Evento(String idEvento, String nombre, String tipo,
                   String fecha, String hora, String sala, int capacidad) {
@@ -25,9 +26,10 @@ public class Evento {
         this.sala = sala;
         this.capacidad = capacidad;
         this.asistentes = new ArrayList<>();
+        this.recursos = new ArrayList<>();
     }
 
-    // --- Encapsulación (getters/setters) ---
+    // Getters y setters
     public String getIdEvento() { return idEvento; }
     public void setIdEvento(String idEvento) { this.idEvento = idEvento; }
 
@@ -48,37 +50,82 @@ public class Evento {
 
     public int getCapacidad() { return capacidad; }
     public void setCapacidad(int capacidad) { this.capacidad = capacidad; }
+    
+    public void setAsistentes(List<Persona> nuevos) {
+        this.asistentes = (nuevos == null) ? new ArrayList<>() : new ArrayList<>(nuevos);
+    }
+    public void setRecursos(List<Recurso> nuevos) {
+        this.recursos = (nuevos == null) ? new ArrayList<>() : new ArrayList<>(nuevos);
+    }
 
-    // --- Asistentes / cupos ---
+
+    // Métodos para gestión de asistentes
     public List<Persona> getAsistentes() {
         return Collections.unmodifiableList(asistentes);
     }
-
-    public int getTotalAsistentes() { return asistentes.size(); }
 
     public boolean hayCupos() {
         return asistentes.size() < capacidad;
     }
 
-    public int getCuposDisponibles() {
-        return capacidad - asistentes.size();
+    public int getCuposRestantes() {
+        return Math.max(0, capacidad - asistentes.size());
     }
 
-    // Primera parte de la sobrecarga (por Persona).
-    // La segunda (por nombre/rol) la añadimos en la siguiente sub-fase.
+    // Sobrecarga de métodos para agregar asistentes
     public boolean agregarAsistente(Persona p) {
         if (p == null || !hayCupos()) return false;
-        // Evitar duplicados por idPersona
+        
+        // Verificar duplicados por ID
         for (Persona a : asistentes) {
-            if (a.getIdPersona().equals(p.getIdPersona())) return false;
+            if (a.getIdPersona().equalsIgnoreCase(p.getIdPersona())) {
+                return false;
+            }
         }
         return asistentes.add(p);
     }
 
+    public boolean agregarAsistente(String nombre, String rol) {
+        if (nombre == null || rol == null || !hayCupos()) return false;
+        
+        // Generar ID único
+        String nuevoId = "A" + (asistentes.size() + 100);
+        return agregarAsistente(new Persona(nuevoId, nombre, rol));
+    }
+
+    // Métodos para gestión de recursos
+    public boolean agregarRecurso(Recurso recurso) {
+        if (recurso == null) return false;
+        return recursos.add(recurso);
+    }
+
+    public List<Recurso> getRecursos() {
+        return Collections.unmodifiableList(recursos);
+    }
+
+    // Sobrecarga de métodos para reservar recursos
+    public boolean reservarRecurso(String idRecurso, String fecha) {
+        return reservarRecurso(idRecurso, fecha, null);
+    }
+
+    public boolean reservarRecurso(String idRecurso, String fecha, String hora) {
+        if (idRecurso == null || fecha == null) return false;
+        
+        for (Recurso r : recursos) {
+            if (r.getIdRecurso().equalsIgnoreCase(idRecurso)) {
+                if (hora == null || hora.isBlank()) {
+                    return r.reservar(fecha);
+                } else {
+                    return r.reservar(fecha, hora);
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
-        return "Evento{id='" + idEvento + "', nombre='" + nombre + "', tipo='" + tipo +
-               "', fecha='" + fecha + "', hora='" + hora + "', sala='" + sala +
-               "', capacidad=" + capacidad + ", inscritos=" + asistentes.size() + "}";
+        String estado = hayCupos() ? "Disponible" : "SIN CUPO";
+        return idEvento + " - " + nombre + " (" + tipo + ") - " + fecha + " - " + estado;
     }
 }

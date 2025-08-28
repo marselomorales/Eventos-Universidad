@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sia;
 
-/**
- *
- * @author marce
- */
 public class Persona {
     private String idPersona;
     private String nombre;
-    private String rol; // "docente" / "estudiante"
+    private String rol;
 
     public Persona(String idPersona, String nombre, String rol) {
         this.idPersona = idPersona;
@@ -19,6 +11,7 @@ public class Persona {
         this.rol = rol;
     }
 
+    // Getters y setters
     public String getIdPersona() { return idPersona; }
     public void setIdPersona(String idPersona) { this.idPersona = idPersona; }
 
@@ -30,6 +23,6 @@ public class Persona {
 
     @Override
     public String toString() {
-        return "Persona{id='" + idPersona + "', nombre='" + nombre + "', rol='" + rol + "'}";
+        return nombre + " (" + rol + ")";
     }
 }
