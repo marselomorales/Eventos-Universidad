@@ -5,8 +5,13 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Clase principal que maneja la interfaz de usuario del sistema de gestión de eventos.
+ * Contiene los menús interactivos y la lógica de presentación.
+ */
 
 public class App {
+    // Códigos de color para la consola
     private static final String BLUE = "\u001B[34m";
     private static final String GREEN = "\u001B[32m";
     private static final String YELLOW = "\u001B[33m";
@@ -18,13 +23,15 @@ public class App {
     
     private static final SistemaEventos sistema = new SistemaEventos();
     private static final Scanner sc = new Scanner(System.in);
-
+    
+    // Muestra el banner inicial de la aplicación
     private static void banner() {
         System.out.println(CYAN + "==========================================");
         System.out.println("   ORGANIZADOR EVENTOS UNIVERSITARIO");
         System.out.println("==========================================" + RESET);
     }
-
+    
+    // Resto de métodos de menú y funcionalidades principales...
     private static void menuPrincipal() {
         System.out.println("\n" + BOLD + "MENÚ PRINCIPAL" + RESET);
         System.out.println(GREEN + "[1]" + RESET + " Gestión de Eventos");

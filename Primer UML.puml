@@ -1,0 +1,104 @@
+@startuml
+
+' Clases del proyecto
+class sia.App {
+    - static final String RESET
+    - static final String BOLD
+    - static final String CYAN
+    - static final String GREEN
+    - static final String GRAY
+    - static final SistemaEventos sistema
+    + void banner()
+    + void menu()
+    + void imprimirTablaEventos(List<Evento> lista)
+    + String recortar(String s, int max)
+    + static void main(String[] args)
+}
+
+class sia.Evento {
+    - String idEvento
+    - String nombre
+    - String tipo
+    - String fecha
+    - String hora
+    - String sala
+    - int capacidad
+    - ArrayList<Persona> asistentes
+    + Evento(String idEvento, String nombre, String tipo, String fecha, String hora, String sala, int capacidad)
+    + String getIdEvento()
+    + void setIdEvento(String idEvento)
+    + String getNombre()
+    + void setNombre(String nombre)
+    + String getTipo()
+    + void setTipo(String tipo)
+    + String getFecha()
+    + void setFecha(String fecha)
+    + String getHora()
+    + void setHora(String hora)
+    + String getSala()
+    + void setSala(String sala)
+    + int getCapacidad()
+    + void setCapacidad(int capacidad)
+    + List<Persona> getAsistentes()
+    + int getTotalAsistentes()
+    + boolean hayCupos()
+    + int getCuposDisponibles()
+    + boolean agregarAsistente(Persona p)
+    + boolean agregarAsistente(String nombre, String rol)
+    + String toString()
+}
+
+class sia.Persona {
+    - String idPersona
+    - String nombre
+    - String rol
+    + Persona(String idPersona, String nombre, String rol)
+    + String getIdPersona()
+    + void setIdPersona(String idPersona)
+    + String getNombre()
+    + void setNombre(String nombre)
+    + String getRol()
+    + void setRol(String rol)
+    + String toString()
+}
+
+class sia.Recurso {
+    - String idRecurso
+    - String nombre
+    - String tipo
+    - boolean disponible
+    + Recurso(String idRecurso, String nombre, String tipo)
+    + String getIdRecurso()
+    + void setIdRecurso(String idRecurso)
+    + String getNombre()
+    + void setNombre(String nombre)
+    + String getTipo()
+    + void setTipo(String tipo)
+    + boolean isDisponible()
+    + void setDisponible(boolean disponible)
+    + String toString()
+}
+
+class sia.SistemaEventos {
+    - ArrayList<Evento> eventos
+    - HashMap<String, Evento> indexPorId
+    + void seed()
+    + void addEvento(Evento e)
+    + List<Evento> getEventos()
+    + List<Evento> listarEventosConCupo()
+    + List<Evento> buscarPorId(String id)
+    + List<Evento> buscarPorNombre(String nombre)
+}
+
+' Relaciones
+sia.App ..> sia.SistemaEventos : usa
+sia.App ..> java.util.List : usa
+sia.App ..> java.util.Scanner : usa
+sia.Evento ..> sia.Persona : tiene
+sia.Evento ..> java.util.ArrayList : usa
+sia.Evento ..> java.util.Collections : usa
+sia.SistemaEventos ..> java.util.ArrayList : usa
+sia.SistemaEventos ..> java.util.HashMap : usa
+sia.SistemaEventos ..> java.util.List : usa
+
+@enduml

@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Clase central que gestiona todos los eventos, recursos y búsquedas.
+ * Actúa como capa de servicio entre los datos y la interfaz de usuario.
+ */
 public class SistemaEventos {
     private final ArrayList<Evento> eventos = new ArrayList<>();
     private final Map<String, Evento> indexPorId = new HashMap<>();
@@ -125,17 +129,27 @@ public class SistemaEventos {
                 .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "")
                 .toLowerCase();
     }
-
+    
+    /**
+     * Agrega un nuevo evento al sistema
+     * @param e Evento a agregar
+     */
     public void addEvento(Evento e) {
         if (e == null) return;
         eventos.add(e);
         indexPorId.put(normalizarTexto(e.getIdEvento()), e);
     }
-
+    
+    /**
+     * Busca eventos por tipo
+     * @param tipo Tipo de evento a buscar
+     * @return Lista de eventos que coinciden con el tipo
+     */
     public List<Evento> getEventos() {
         return new ArrayList<>(eventos);
     }
-
+    
+    // Más métodos de gestión y búsqueda...
     public void setEventos(ArrayList<Evento> eventos) {
         this.eventos.clear();
         this.eventos.addAll(eventos);

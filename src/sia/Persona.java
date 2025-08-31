@@ -1,10 +1,15 @@
 package sia;
 
+/**
+ * Representa a una persona que puede asistir a eventos
+ * (ya sea como docente o estudiante)
+ */
 public class Persona {
     private String idPersona;
     private String nombre;
     private String rol;
-
+    
+    //Constructor
     public Persona(String idPersona, String nombre, String rol) {
         this.idPersona = idPersona;
         this.nombre = nombre;

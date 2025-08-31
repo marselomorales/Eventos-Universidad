@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
+/**
+ * Representa un evento en el sistema.
+ * Contiene información sobre el evento, asistentes y recursos asignados.
+ */
 public class Evento {
     private String idEvento;
     private String nombre;
@@ -15,7 +18,8 @@ public class Evento {
     private int capacidad;
     private ArrayList<Persona> asistentes;
     private ArrayList<Recurso> recursos;
-
+    
+    //Constructor para crear un nuevo evento
     public Evento(String idEvento, String nombre, String tipo,
                   String fecha, String hora, String sala, int capacidad) {
         this.idEvento = idEvento;

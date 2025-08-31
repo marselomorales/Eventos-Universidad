@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Representa un recurso que puede ser reservado para eventos
+ * (equipos, espacios, materiales, etc.)
+ */
 public class Recurso {
     private String idRecurso;
     private String nombre;
@@ -14,6 +18,7 @@ public class Recurso {
     private final Map<String, Set<String>> reservasPorFecha = new HashMap<>();
     private static final String ALL_DAY = "*";
 
+    //Constructor
     public Recurso(String idRecurso, String nombre, String tipo) {
         this.idRecurso = idRecurso;
         this.nombre = nombre;
@@ -42,7 +47,13 @@ public class Recurso {
     public boolean reservar(String fecha) {
         return reservar(fecha, null);
     }
-
+    
+    /**
+     * Reserva el recurso para una fecha y hora específica
+     * @param fecha Fecha de reserva en formato AAAA-MM-DD
+     * @param hora Hora de reserva (opcional)
+     * retorna true si la reserva fue exitosa
+     */
     public boolean reservar(String fecha, String hora) {
         if (fecha == null || fecha.isBlank()) return false;
         
