@@ -9,7 +9,6 @@ import java.util.Arrays;
  * Clase principal que maneja la interfaz de usuario del sistema de gestión de eventos.
  * Contiene los menús interactivos y la lógica de presentación.
  */
-
 public class App {
     // Códigos de color para la consola
     private static final String BLUE = "\u001B[34m";
@@ -28,6 +27,7 @@ public class App {
     private static void banner() {
         System.out.println(CYAN + "==========================================");
         System.out.println("   ORGANIZADOR EVENTOS UNIVERSITARIO");
+        System.out.println("         Planifica y coordina");
         System.out.println("==========================================" + RESET);
     }
     
@@ -91,7 +91,9 @@ public class App {
                 case "3": menuGestionRecursos(); break;
                 case "4": menuBusquedasConsultas(); break;
                 case "0": 
-                    System.out.println("¡Gracias por usar SIA-Eventos!");
+                    System.out.println("");
+                    System.out.println("Gracias por Preferirnos.");
+                    System.out.println("Éxitos con tus actividades. ¡Hasta la próxima!");
                     return;
                 default:
                     System.out.println(RED + "Opción inválida. Intente nuevamente." + RESET);
