@@ -24,6 +24,8 @@ Navegue hasta la carpeta descomprimida y seleccione el proyecto
 
 Espere a que NetBeans indexe las dependencias
 
+----------------------------------------------------------------------------------------
+
 Opción 2: Para Colaboradores
 Clone el repositorio usando Git:
 
