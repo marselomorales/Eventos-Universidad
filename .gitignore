@@ -1,17 +1,6 @@
-# NetBeans
-nbproject/private/
-build/
-dist/
-*.class
-*.jar
-
-# Archivos del sistema
+/build/
+/dist/
+/nbproject/private/
+**/*.class
 .DS_Store
 Thumbs.db
-
-# Logs
-*.log
-
-# Archivos temporales del IDE
-*.orig
-*.tmp
