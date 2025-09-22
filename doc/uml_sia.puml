@@ -1,0 +1,125 @@
+@startuml
+skinparam classAttributeIconSize 0
+class App {
+}
+class Equipo {
+  - tipoEquipo
+}
+class Estudiante {
+  - carrera
+  - nivel
+}
+class Evento {
+  - idEvento
+  - nombre
+  - tipo
+  - fecha
+  - hora
+  - sala
+  - capacidad
+}
+class Persona {
+  - id
+  - nombre
+  - email
+}
+class Profesor {
+  - departamento
+  - categoria
+}
+class Recurso {
+  - id
+  - nombre
+  - disponible
+  - fechaReservada
+}
+class Sala {
+  - capacidad
+  - ubicacion
+}
+class SistemaEventos {
+  - eventos
+  - recursosDisponibles
+}
+class CapacidadLlenaException {
+}
+class RecursoOcupadoException {
+}
+class CsvStorage {
+}
+class Validators {
+}
+class ActionCardButton {
+  - bg
+  - fgText
+  - outline
+}
+class AddPersonaDialog {
+  - txtId
+  - txtNombre
+  - txtEmail
+  - cmbTipo
+  - txtCarrera
+  - spNivel
+  - txtDepartamento
+  - txtCategoria
+  - personaCreada
+}
+class AdvancedSearchDialog {
+}
+class BannerPanel {
+}
+class EventDialog {
+  - cbTipo
+  - spFecha
+  - spHora
+  - cbSala
+  - spCapacidad
+  - accepted
+  - result
+  - btnOk
+}
+class EventTableModel {
+}
+class IconKit {
+}
+class MainFrame {
+  - tableModel
+  - table
+  - sorter
+  - statusLabel
+  - cbScope
+}
+class ManageAsistentesDialog {
+  - modelo
+  - lst
+}
+class ManageRecursosDialog {
+  - modelo
+  - lst
+  - cmbTipo
+  - txtId
+  - txtNombre
+  - spCapacidad
+  - txtUbicacion
+  - txtTipoEquipo
+  - chkDisponible
+}
+class SplashScreen {
+}
+Recurso <|-- Equipo
+Persona <|-- Estudiante
+Persona <|-- Profesor
+Recurso <|-- Sala
+Exception <|-- CapacidadLlenaException
+Exception <|-- RecursoOcupadoException
+JButton <|-- ActionCardButton
+JDialog <|-- AddPersonaDialog
+JDialog <|-- AdvancedSearchDialog
+JPanel <|-- BannerPanel
+JDialog <|-- EventDialog
+AbstractTableModel <|-- EventTableModel
+JFrame <|-- MainFrame
+JDialog <|-- ManageAsistentesDialog
+JDialog <|-- ManageRecursosDialog
+@enduml

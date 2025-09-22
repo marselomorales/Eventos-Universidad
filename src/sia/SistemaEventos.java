@@ -1,249 +1,269 @@
 package sia;
 
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-/**
- * Clase central que gestiona todos los eventos, recursos y búsquedas.
- * Actúa como capa de servicio entre los datos y la interfaz de usuario.
- */
 public class SistemaEventos {
-    private final ArrayList<Evento> eventos = new ArrayList<>();
+
     private final Map<String, Evento> indexPorId = new HashMap<>();
-    private final List<Recurso> recursosDisponibles = new ArrayList<>();
+    private List<Evento> eventos = new ArrayList<>();
+    private List<Recurso> recursosDisponibles = new ArrayList<>();
 
-    public void seed() {
-        // Personas precargadas
-        Persona p1 = new Persona("A101", "Ana Díaz", "docente");
-        Persona p2 = new Persona("A102", "Benjamín Soto", "estudiante");
-        Persona p3 = new Persona("A103", "Carla Pérez", "estudiante");
-        Persona p4 = new Persona("A104", "Diego López", "docente");
-        Persona p5 = new Persona("A105", "Elena Castro", "estudiante");
-        Persona p6 = new Persona("A106", "Fernando Martínez", "docente");
-        Persona p7 = new Persona("A107", "Gabriela Silva", "estudiante");
-        Persona p8 = new Persona("A108", "Héctor Rodríguez", "estudiante");
-        Persona p9 = new Persona("A109", "Isabel González", "docente");
-        Persona p10 = new Persona("A110", "Javier Méndez", "estudiante");
-
-        // Recursos precargados
-        List<Recurso> recursos = Arrays.asList(
-            new Recurso("R001", "Proyector 4K", "Audiovisual"),
-            new Recurso("R002", "Sala de Conferencias", "Espacio"),
-            new Recurso("R003", "Micrófono Inalámbrico", "Audio"),
-            new Recurso("R004", "Computadora i7", "Tecnología"),
-            new Recurso("R005", "Pizarra Interactiva", "Mobiliario"),
-            new Recurso("R006", "Escenario Móvil", "Estructura"),
-            new Recurso("R007", "Sillas Conferencia", "Mobiliario"),
-            new Recurso("R008", "Mesas para Taller", "Mobiliario"),
-            new Recurso("R009", "Sistema de Luces LED", "Iluminación"),
-            new Recurso("R010", "Sistema de Sonido 5.1", "Audio"),
-            new Recurso("R011", "Cámaras de Video", "Audiovisual"),
-            new Recurso("R012", "Plantillas de Presentación", "Material"),
-            new Recurso("R013", "Internet Fibra Óptica", "Conectividad"),
-            new Recurso("R014", "Impresora 3D", "Tecnología"),
-            new Recurso("R015", "Tabletas Gráficas", "Tecnología")
-        );
-        
-        recursosDisponibles.addAll(recursos);
-
-        // Eventos precargados con diferentes tipos
-        Evento e1 = new Evento("E101", "Charla de Inteligencia Artificial", "charla",
-                "2025-09-05", "11:00", "B-201", 50);
-        Evento e2 = new Evento("E102", "Taller de Git y GitHub", "taller",
-                "2025-09-07", "16:00", "Lab-3", 25);
-        Evento e3 = new Evento("E103", "Seminario de Visualización de Datos", "seminario",
-                "2025-09-12", "10:00", "Auditorio", 120);
-        Evento e4 = new Evento("E104", "Concierto de Música Clásica", "cultural",
-                "2025-09-15", "19:00", "Auditorio", 200);
-        Evento e5 = new Evento("E105", "Exposición de Arte Contemporáneo", "cultural",
-                "2025-09-20", "15:00", "Galería", 80);
-        Evento e6 = new Evento("E106", "Workshop de Robótica", "taller",
-                "2025-09-25", "14:00", "Lab-4", 30);
-        Evento e7 = new Evento("E107", "Conferencia de Cybersecurity", "conferencia",
-                "2025-10-02", "09:00", "A-101", 100);
-        Evento e8 = new Evento("E108", "Presentación de Proyectos Finales", "exposicion",
-                "2025-10-10", "13:00", "Hall Principal", 150);
-        Evento e9 = new Evento("E109", "Debate sobre Ética en IA", "debate",
-                "2025-10-15", "16:30", "Sala de Usos Múltiples", 40);
-        Evento e10 = new Evento("E110", "Feria de Emprendimiento", "feria",
-                "2025-10-20", "10:00", "Patio Central", 300);
-
-        // Asignar recursos a eventos
-        e1.agregarRecurso(recursos.get(0));
-        e1.agregarRecurso(recursos.get(3));
-        e2.agregarRecurso(recursos.get(1));
-        e2.agregarRecurso(recursos.get(4));
-        e3.agregarRecurso(recursos.get(2));
-        e3.agregarRecurso(recursos.get(3));
-        e4.agregarRecurso(recursos.get(5));
-        e4.agregarRecurso(recursos.get(8));
-        e4.agregarRecurso(recursos.get(9));
-        e5.agregarRecurso(recursos.get(8));
-        e6.agregarRecurso(recursos.get(3));
-        e6.agregarRecurso(recursos.get(6));
-        e6.agregarRecurso(recursos.get(7));
-        e7.agregarRecurso(recursos.get(0));
-        e7.agregarRecurso(recursos.get(2));
-        e7.agregarRecurso(recursos.get(9));
-        e8.agregarRecurso(recursos.get(5));
-        e8.agregarRecurso(recursos.get(8));
-        e8.agregarRecurso(recursos.get(9));
-        e9.agregarRecurso(recursos.get(2));
-        e9.agregarRecurso(recursos.get(4));
-        e10.agregarRecurso(recursos.get(5));
-        e10.agregarRecurso(recursos.get(8));
-        e10.agregarRecurso(recursos.get(9));
-
-        // Asignar asistentes iniciales
-        e1.agregarAsistente(p1);
-        e1.agregarAsistente(p2);
-        e2.agregarAsistente(p3);
-        e3.agregarAsistente(p4);
-        e4.agregarAsistente(p5);
-        e5.agregarAsistente(p6);
-        e6.agregarAsistente(p7);
-        e7.agregarAsistente(p8);
-        e8.agregarAsistente(p9);
-        e9.agregarAsistente(p10);
-
-        // Agregar eventos al sistema
-        addEvento(e1);
-        addEvento(e2);
-        addEvento(e3);
-        addEvento(e4);
-        addEvento(e5);
-        addEvento(e6);
-        addEvento(e7);
-        addEvento(e8);
-        addEvento(e9);
-        addEvento(e10);
+    /* ======== Acceso usado por CsvStorage y la GUI ======== */
+    public List<Evento> getEventos() { return eventos; }
+    public void setEventos(List<Evento> evs) {
+        this.eventos = (evs != null) ? evs : new ArrayList<>();
+        rebuildIndex();
     }
 
-    private String normalizarTexto(String texto) {
-        if (texto == null) return "";
-        return Normalizer.normalize(texto.trim(), Normalizer.Form.NFD)
-                .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "")
-                .toLowerCase();
+    public List<Recurso> getRecursosDisponibles() { return recursosDisponibles; }
+    public void setRecursosDisponibles(List<Recurso> recs) {
+        this.recursosDisponibles = (recs != null) ? recs : new ArrayList<>();
     }
-    
-    /**
-     * Agrega un nuevo evento al sistema
-     * @param e Evento a agregar
-     */
-    public void addEvento(Evento e) {
-        if (e == null) return;
+
+    public Evento buscarEvento(String idEvento) {
+        return indexPorId.get(idEvento);
+    }
+
+    public void agregarEvento(Evento e) {
+        if (e == null || e.getIdEvento() == null) return;
+        // si ya existe, reemplaza
+        eliminarEvento(e.getIdEvento());
         eventos.add(e);
-        indexPorId.put(normalizarTexto(e.getIdEvento()), e);
+        indexPorId.put(e.getIdEvento(), e);
     }
-    
-    /**
-     * Busca eventos por tipo
-     * @param tipo Tipo de evento a buscar
-     * @return Lista de eventos que coinciden con el tipo
-     */
-    public List<Evento> getEventos() {
-        return new ArrayList<>(eventos);
+
+    public boolean eliminarEvento(String idEvento) {
+        if (idEvento == null) return false;
+        Evento prev = indexPorId.remove(idEvento);
+        if (prev == null) return false;
+        return eventos.removeIf(x -> idEvento.equals(x.getIdEvento()));
     }
-    
-    // Más métodos de gestión y búsqueda...
-    public void setEventos(ArrayList<Evento> eventos) {
-        this.eventos.clear();
-        this.eventos.addAll(eventos);
-        // Reconstruir el índice para mantener consistencia
-        this.indexPorId.clear();
-        for (Evento evento : eventos) {
-            indexPorId.put(normalizarTexto(evento.getIdEvento()), evento);
+
+    public boolean modificarEvento(Evento nuevo) {
+        if (nuevo == null || nuevo.getIdEvento() == null) return false;
+        String id = nuevo.getIdEvento();
+        for (int i = 0; i < eventos.size(); i++) {
+            if (id.equals(eventos.get(i).getIdEvento())) {
+                eventos.set(i, nuevo);
+                indexPorId.put(id, nuevo);
+                return true;
+            }
         }
+        return false;
     }
 
-    public Map<String, Evento> getIndexPorId() {
-        return new HashMap<>(indexPorId);
-    }
-
-    public void setIndexPorId(Map<String, Evento> indexPorId) {
-        this.indexPorId.clear();
-        this.indexPorId.putAll(indexPorId);
-    }
-
-    public List<Recurso> getRecursosDisponibles() {
-        return new ArrayList<>(recursosDisponibles);
-    }
-
-    public void setRecursosDisponibles(List<Recurso> recursosDisponibles) {
-        this.recursosDisponibles.clear();
-        this.recursosDisponibles.addAll(recursosDisponibles);
-    }
-
-    public List<Evento> listarEventosConCupo() {
-        ArrayList<Evento> res = new ArrayList<>();
+    /* ======== Utilidades ======== */
+    private void rebuildIndex() {
+        indexPorId.clear();
         for (Evento e : eventos) {
-            if (e.hayCupos()) res.add(e);
+            if (e.getIdEvento() != null) indexPorId.put(e.getIdEvento(), e);
         }
-        return res;
     }
     
-    public String getNextEventId() {
-        int maxId = 0;
-        for (Evento evento : eventos) {
-            String id = evento.getIdEvento();
-            if (id.startsWith("E")) {
-                try {
-                    int num = Integer.parseInt(id.substring(1));
-                    if (num > maxId) maxId = num;
-                } catch (NumberFormatException e) {
-                    // Ignorar si no es número
+    // === NEGOCIO (excepciones propias y utilidades) ===
+    public List<Evento> filtrarEventos(String q) {
+        if (q == null || q.trim().isEmpty()) return new ArrayList<>(eventos);
+        String x = q.trim().toLowerCase(Locale.ROOT);
+        List<Evento> out = new ArrayList<>();
+        for (Evento e : eventos) {
+            if ((e.getIdEvento() != null && e.getIdEvento().toLowerCase().contains(x))
+             || (e.getNombre()   != null && e.getNombre().toLowerCase().contains(x))
+             || (e.getTipo()     != null && e.getTipo().toLowerCase().contains(x))
+             || (e.getFecha()    != null && e.getFecha().toLowerCase().contains(x))
+             || (e.getHora()     != null && e.getHora().toLowerCase().contains(x))
+            ) out.add(e);
+        }
+        return out;
+    }
+
+    /** Agrega un asistente respetando la capacidad. Lanza CapacidadLlenaException. */
+    public void agregarAsistenteOrThrow(Evento e, Persona p) throws sia.exceptions.CapacidadLlenaException {
+        if (e == null || p == null) return;
+        if (e.getCapacidad() > 0 && e.getAsistentes().size() >= e.getCapacidad()) {
+            throw new sia.exceptions.CapacidadLlenaException(
+                "La capacidad del evento (" + e.getCapacidad() + ") ya está completa."
+            );
+        }
+        // evita duplicados por id
+        for (Persona ex : e.getAsistentes()) if (Objects.equals(ex.getId(), p.getId())) return;
+        e.getAsistentes().add(p);
+    }
+
+    /** Asocia un recurso a un evento evitando doble reserva en misma fecha/hora. */
+    public void asociarRecursoOrThrow(Evento e, Recurso r) throws sia.exceptions.RecursoOcupadoException {
+        if (e == null || r == null) return;
+        String f = e.getFecha() == null ? "" : e.getFecha().trim();
+        String h = e.getHora()  == null ? "" : e.getHora().trim();
+
+        // ¿ya está en el evento?
+        for (Recurso x : e.getRecursos()) if (Objects.equals(x.getId(), r.getId())) return;
+
+        // Conflicto: mismo recurso reservado en otro evento con misma fecha/hora
+        for (Evento otro : eventos) {
+            if (otro == e) continue;
+            boolean mismaFecha = Objects.equals(f, (otro.getFecha()==null?"":otro.getFecha().trim()));
+            boolean mismaHora  = Objects.equals(h, (otro.getHora()==null ?"":otro.getHora().trim()));
+            if (mismaFecha && mismaHora) {
+                for (Recurso rx : otro.getRecursos()) {
+                    if (Objects.equals(rx.getId(), r.getId())) {
+                        throw new sia.exceptions.RecursoOcupadoException(
+                            "El recurso " + r.getId() + " ya está asociado al evento " +
+                            otro.getIdEvento() + " en " + f + " " + h + "."
+                        );
+                    }
                 }
             }
         }
-        return "E" + (maxId + 1);
+        e.getRecursos().add(r);
     }
 
-    public List<Evento> buscarPorId(String id) {
-        List<Evento> result = new ArrayList<>();
-        Evento e = indexPorId.get(normalizarTexto(id));
-        if (e != null) result.add(e);
-        return result;
-    }
-
-    public List<Evento> buscarPorNombre(String nombre) {
-        ArrayList<Evento> result = new ArrayList<>();
-        String nombreNormalizado = normalizarTexto(nombre);
-
-        for (Evento e : eventos) {
-            if (normalizarTexto(e.getNombre()).contains(nombreNormalizado)) {
-                result.add(e);
-            }
-        }
-        return result;
+    /** Quita un recurso del evento por id. */
+    public boolean desasociarRecurso(Evento e, String idRecurso) {
+        if (e == null || idRecurso == null) return false;
+        return e.getRecursos().removeIf(x -> Objects.equals(x.getId(), idRecurso));
     }
     
-    public Evento buscarEventoPorId(String id) {
-        return indexPorId.get(normalizarTexto(id));
-    }
-    
-    public List<Evento> buscarPorTipo(String tipo) {
-        ArrayList<Evento> result = new ArrayList<>();
-        String tipoNormalizado = normalizarTexto(tipo);
+    // ========== MÉTODOS NUEVOS PARA GESTIÓN DE RECURSOS ==========
+    private static final Map<String, List<String>> SUGERENCIAS_POR_TIPO = new HashMap<String, List<String>>() {{
+        put("Charla", Arrays.asList("Proyector", "Sala"));
+        put("Seminario", Arrays.asList("Proyector", "Sala"));
+        put("Taller", Arrays.asList("Notebook", "Sala"));
+        put("Laboratorio", Arrays.asList("Notebook", "Sala"));
+        put("Evaluación", Arrays.asList("Sala"));
+        put("Reunión", Arrays.asList("Sala"));
+        put("Ceremonia", Arrays.asList("Sala", "Amplificación"));
+        put("Defensa", Arrays.asList("Proyector", "Sala"));
+    }};
 
+    public boolean isRecursoDisponible(Recurso recurso, String fecha, String hora) {
         for (Evento e : eventos) {
-            if (normalizarTexto(e.getTipo()).equals(tipoNormalizado)) {
-                result.add(e);
+            if (e.getRecursos().contains(recurso) && 
+                Objects.equals(e.getFecha(), fecha) && 
+                Objects.equals(e.getHora(), hora)) {
+                return false;
             }
         }
-        return result;
+        return true;
+    }
+
+    public List<Recurso> listarRecursosOrdenadosPara(Evento evento, String filtroTexto, String estadoFiltro) {
+        List<Recurso> recursosFiltrados = new ArrayList<>();
+        
+        for (Recurso r : recursosDisponibles) {
+            if (filterRecurso(r, filtroTexto, estadoFiltro, evento)) {
+                recursosFiltrados.add(r);
+            }
+        }
+        
+        // Ordenar
+        Collections.sort(recursosFiltrados, new Comparator<Recurso>() {
+            @Override
+            public int compare(Recurso r1, Recurso r2) {
+                // Disponibles primero
+                boolean disp1 = isRecursoDisponible(r1, evento.getFecha(), evento.getHora());
+                boolean disp2 = isRecursoDisponible(r2, evento.getFecha(), evento.getHora());
+                
+                if (disp1 != disp2) {
+                    return disp1 ? -1 : 1;
+                }
+                
+                // Luego por score
+                int score1 = calculateScore(r1, evento);
+                int score2 = calculateScore(r2, evento);
+                
+                if (score1 != score2) {
+                    return Integer.compare(score2, score1); // Mayor score primero
+                }
+                
+                // Finalmente por nombre
+                return r1.getNombre().compareTo(r2.getNombre());
+            }
+        });
+        
+        return recursosFiltrados;
+    }
+
+    private boolean filterRecurso(Recurso r, String filterText, String estado, Evento evento) {
+        // Filtro de texto
+        if (filterText != null && !filterText.isEmpty()) {
+            String lowerFilter = filterText.toLowerCase();
+            if (!(r.getNombre().toLowerCase().contains(lowerFilter) ||
+                 (r instanceof Sala && ((Sala) r).getUbicacion().toLowerCase().contains(lowerFilter)) ||
+                 (r instanceof Equipo && ((Equipo) r).getTipoEquipo().toLowerCase().contains(lowerFilter)))) {
+                return false;
+            }
+        }
+
+        // Filtro de disponibilidad
+        boolean disponible = isRecursoDisponible(r, evento.getFecha(), evento.getHora());
+        if ("Disponibles".equals(estado) && !disponible) return false;
+        if ("Ocupados".equals(estado) && disponible) return false;
+        
+        return true;
+    }
+
+    private int calculateScore(Recurso r, Evento evento) {
+        int score = 0;
+        String tipoEvento = evento.getTipo();
+        List<String> sugerencias = SUGERENCIAS_POR_TIPO.getOrDefault(tipoEvento, Arrays.asList());
+
+        if (r instanceof Sala) {
+            score += 2;
+            Sala s = (Sala) r;
+            if (s.getCapacidad() >= evento.getCapacidad()) {
+                score += 2;
+            }
+        } else if (r instanceof Equipo) {
+            Equipo e = (Equipo) r;
+            if (sugerencias.contains(e.getTipoEquipo())) {
+                score += 3;
+            }
+        }
+        return score;
     }
     
-    public List<String> getTiposEvento() {
-        List<String> tipos = new ArrayList<>();
+    public List<Persona> listarPersonasCatalogo(String filtroTexto, String rolFiltro) {
+        List<Persona> todasPersonas = new ArrayList<>();
+
+        // Recopilar todas las personas de los eventos y recursos disponibles
         for (Evento e : eventos) {
-            if (!tipos.contains(e.getTipo())) {
-                tipos.add(e.getTipo());
+            todasPersonas.addAll(e.getAsistentes());
+        }
+
+        // Filtrar por texto
+        List<Persona> resultado = new ArrayList<>();
+        for (Persona p : todasPersonas) {
+            if (filtroTexto == null || filtroTexto.isEmpty() || 
+                p.getNombre().toLowerCase().contains(filtroTexto.toLowerCase()) ||
+                p.getEmail().toLowerCase().contains(filtroTexto.toLowerCase())) {
+
+                // Filtrar por rol
+                if ("TODOS".equals(rolFiltro) || 
+                    ("ESTUDIANTES".equals(rolFiltro) && p instanceof Estudiante) ||
+                    ("PROFESORES".equals(rolFiltro) && p instanceof Profesor)) {
+                    resultado.add(p);
+                }
             }
         }
-        return tipos;
+
+        return resultado;
     }
+
+    public boolean yaInscrito(Evento e, Persona p) {
+        for (Persona asistente : e.getAsistentes()) {
+            if (asistente.getId().equals(p.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int contarInscritos(Evento e) {
+        return e.getAsistentes().size();
+    }
+
+    public boolean puedeInscribir(Evento e) {
+        return e.getCapacidad() <= 0 || contarInscritos(e) < e.getCapacidad();
+    }
+    
 }

@@ -1,0 +1,16 @@
+id;nombre;tipo;fecha;hora;sala;capacidad
+E101;Charla de Inteligencia Artificial;charla;2025-09-05;11:00;B-201;50
+E102;Taller de Git y GitHub;taller;2025-09-07;16:00;Lab-3;25
+E103;Seminario de Visualización de Datos;seminario;2025-09-12;10:00;Auditorio;120
+E104;Concierto de Música Clásica;cultural;2025-09-15;19:00;Auditorio;200
+E105;Exposición de Arte Contemporáneo;cultural;2025-09-20;15:00;Galería;80
+E106;Workshop de Robótica;taller;2025-09-25;14:00;Lab-4;30
+E107;Conferencia de Cybersecurity;conferencia;2025-10-02;09:00;A-101;100
+E108;Presentación de Proyectos Finales;exposicion;2025-10-10;13:00;Hall Principal;150
+E109;Debate sobre Ética en IA;debate;2025-10-15;16:30;Sala de Usos Múltiples;40
+E110;Feria de Emprendimiento;feria;2025-10-20;10:00;Patio Central;300
+E111;Ceremonia de Graduación;ceremonia;2025-11-05;18:00;Auditorio Principal;500
+E112;Maratón de Programación;competencia;2025-11-12;09:00;Lab-5;50
+E113;Charla de Innovación Tecnológica;charla;2025-11-18;15:00;B-302;60
+E114;Festival de Cine;cultural;2025-11-25;19:00;Sala de Proyecciones;80
+E115;Simposio de Investigación;academico;2025-12-02;10:00;Auditorio;200
