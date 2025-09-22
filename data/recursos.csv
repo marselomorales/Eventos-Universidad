@@ -1,0 +1,14 @@
+tipo;id;nombre;capacidad;ubicacion;tipoEquipo;disponible
+Sala;S003;Laboratorio de Computación;30;Edificio C;;true
+Equipo;E001;Proyector 4K;;;;true
+Equipo;E003;Notebook i7;;;;true
+Sala;S004;Aula Magna;200;Edificio D;;true
+Equipo;E007;Cámaras de Video;;;;true
+Sala;S001;Auditorio Principal;500;Edificio A;;true
+Equipo;E005;Sistema de Sonido;;;;true
+Sala;S005;Sala de Usos Múltiples;50;Edificio E;;true
+Sala;S002;Sala de Conferencias;100;Edificio B;;true
+Equipo;E002;Micrófono Inalámbrico;;;;true
+Equipo;E004;Pizarra Interactiva;;;;true
+Equipo;E006;Tabletas Gráficas;;;;true
+Equipo;E008;Pantalla LED;;;;true

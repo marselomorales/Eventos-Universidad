@@ -1,0 +1,16 @@
+tipo;id;nombre;email;carrera;nivel;departamento;categoria
+Estudiante;A101;Ana Díaz;ana.diaz@universidad.edu;Ingeniería Civil Informática;3;;
+Estudiante;A102;Benjamín Soto;benjamin.soto@universidad.edu;Artes;2;;
+Estudiante;A103;Carla Pérez;carla.perez@universidad.edu;Medicina;4;;
+Profesor;A104;Diego López;diego.lopez@universidad.edu;;;Matemáticas;Titular
+Estudiante;A105;Elena Castro;elena.castro@universidad.edu;Derecho;1;;
+Profesor;A106;Fernando Martínez;fernando.martinez@universidad.edu;;;Física;Asociado
+Estudiante;A107;Gabriela Silva;gabriela.silva@universidad.edu;Economía;2;;
+Estudiante;A108;Héctor Rodríguez;hector.rodriguez@universidad.edu;Biología;3;;
+Profesor;A109;Isabel González;isabel.gonzalez@universidad.edu;;;Literatura;Titular
+Estudiante;A110;Javier Méndez;javier.mendez@universidad.edu;Psicología;2;;
+Estudiante;A111;Laura Ramírez;laura.ramirez@universidad.edu;Ingeniería Civil;3;;
+Estudiante;A112;Miguel Ángel Reyes;miguel.reyes@universidad.edu;Arquitectura;4;;
+Profesor;A113;Natalia Vargas;natalia.vargas@universidad.edu;;;Química;Asistente
+Estudiante;A114;Óscar Torres;oscar.torres@universidad.edu;Administración;2;;
+Profesor;A115;Patricia Ruiz;patricia.ruiz@universidad.edu;;;Historia;Titular
