@@ -471,7 +471,7 @@ public class MainFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Selecciona un evento", "Info", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        AsistentesEventoDialog dlg = new AsistentesEventoDialog(this, sistema, sel);
+        ManageAsistentesDialog  dlg = new ManageAsistentesDialog(this, sistema, sel);
         dlg.setLocationRelativeTo(this);
         dlg.setVisible(true);
         tableModel.fireTableDataChanged(); // refresca conteo de inscritos/estado
