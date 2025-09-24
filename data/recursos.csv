@@ -8,7 +8,9 @@ Sala;S001;Auditorio Principal;500;Edificio A;;true
 Equipo;E005;Sistema de Sonido;;;;true
 Sala;S005;Sala de Usos Múltiples;50;Edificio E;;true
 Sala;S002;Sala de Conferencias;100;Edificio B;;true
+Equipo;E009;Nebula 360;;;Proyector;true
 Equipo;E002;Micrófono Inalámbrico;;;;true
 Equipo;E004;Pizarra Interactiva;;;;true
 Equipo;E006;Tabletas Gráficas;;;;true
 Equipo;E008;Pantalla LED;;;;true
+Equipo;48593485;parlantovichgodric;;;Sistema de Sonido;true
