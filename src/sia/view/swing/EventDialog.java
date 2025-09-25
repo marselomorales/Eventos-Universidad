@@ -16,9 +16,8 @@ import java.util.stream.Collectors;
  */
 public class EventDialog extends JDialog {
 
-    private JTextField tfId, tfNombre;
+    private JTextField tfId, tfNombre, tfFecha;
     private JComboBox<String> cbTipo;
-    private JSpinner spFecha;
     private JSpinner spHora;
     private JComboBox<String> cbSala;
     private JSpinner spCapacidad;
@@ -98,6 +97,10 @@ public class EventDialog extends JDialog {
         tfId.setBackground(AppStyle.LIGHT_GRAY);
         
         tfNombre = ComponentFactory.createTextField(24);
+        
+        // Campo de fecha
+        tfFecha = ComponentFactory.createTextField(10);
+        tfFecha.setEditable(false);
 
         // Combo Tipo
         List<String> tipos = sistema.getEventos().stream()
@@ -115,11 +118,6 @@ public class EventDialog extends JDialog {
         
         cbTipo = createStyledComboBox(allTypes.toArray(new String[0]));
         cbTipo.setRenderer(new PlaceholderRenderer("Selecciona un tipo..."));
-
-        // Fecha
-        spFecha = createStyledSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH));
-        JSpinner.DateEditor fe = new JSpinner.DateEditor(spFecha, "dd/MM/yyyy");
-        spFecha.setEditor(fe);
 
         // Hora
         spHora = createStyledSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.MINUTE));
@@ -155,8 +153,11 @@ public class EventDialog extends JDialog {
             setComboValue(cbTipo, base.getTipo());
             setComboValue(cbSala, base.getSala());
             try { 
-                spFecha.setValue(new SimpleDateFormat("yyyy-MM-dd").parse(nvl(base.getFecha()))); 
-            } catch (Exception ignore) {}
+                tfFecha.setText(new SimpleDateFormat("dd/MM/yyyy").format(
+                    new SimpleDateFormat("yyyy-MM-dd").parse(nvl(base.getFecha()))));
+            } catch (Exception ignore) {
+                tfFecha.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+            }
             try { 
                 spHora.setValue(new SimpleDateFormat("HH:mm").parse(nvl(base.getHora()))); 
             } catch (Exception ignore) {}
@@ -164,6 +165,7 @@ public class EventDialog extends JDialog {
         } else {
             tfId.setText(suggestNextId());
             tfNombre.setText("");
+            tfFecha.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
         }
     }
 
@@ -207,16 +209,17 @@ public class EventDialog extends JDialog {
     }
 
     private JPanel createDatePanel() {
-        JPanel panel = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new BorderLayout(5, 0));
         panel.setBackground(AppStyle.CARD_BG);
         
-        panel.add(spFecha, BorderLayout.CENTER);
+        panel.add(tfFecha, BorderLayout.CENTER);
         
-        JButton fechaButton = new JButton("Fecha");
-        fechaButton.setFont(AppStyle.FONT_BUTTON);
+        JButton fechaButton = new JButton("📅");
+        fechaButton.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
         fechaButton.setBackground(AppStyle.SECONDARY);
         fechaButton.setForeground(Color.WHITE);
-        fechaButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        fechaButton.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
+        fechaButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         fechaButton.addActionListener(e -> showCalendarDialog());
         
         panel.add(fechaButton, BorderLayout.EAST);
@@ -319,23 +322,250 @@ public class EventDialog extends JDialog {
     }
 
     private void showCalendarDialog() {
-        // Implementación original del calendario (mantener sin cambios)
         JDialog calendarDialog = new JDialog(this, "Seleccionar Fecha", true);
-        calendarDialog.setLayout(new BorderLayout());
-        calendarDialog.setSize(300, 300);
+        calendarDialog.setLayout(new BorderLayout(10, 10));
+        calendarDialog.setSize(350, 400);
         calendarDialog.setLocationRelativeTo(this);
+        calendarDialog.getContentPane().setBackground(AppStyle.CARD_BG);
 
-        // ... (resto del código del calendario igual al original)
+        // Panel principal del calendario
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBackground(AppStyle.CARD_BG);
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        // Panel de navegación (mes y año)
+        JPanel navPanel = new JPanel(new BorderLayout());
+        navPanel.setBackground(AppStyle.CARD_BG);
+        
+        JButton prevYearBtn = createNavButton("<<");
+        JButton prevMonthBtn = createNavButton("<");
+        JButton nextMonthBtn = createNavButton(">");
+        JButton nextYearBtn = createNavButton(">>");
+        
+        JLabel monthYearLabel = new JLabel("", SwingConstants.CENTER);
+        monthYearLabel.setFont(AppStyle.FONT_SUBTITLE);
+        monthYearLabel.setForeground(AppStyle.TEXT_PRIMARY);
+        
+        JPanel centerNav = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        centerNav.setBackground(AppStyle.CARD_BG);
+        centerNav.add(prevMonthBtn);
+        centerNav.add(monthYearLabel);
+        centerNav.add(nextMonthBtn);
+        
+        JPanel extremeNav = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        extremeNav.setBackground(AppStyle.CARD_BG);
+        extremeNav.add(prevYearBtn);
+        extremeNav.add(nextYearBtn);
+        
+        navPanel.add(centerNav, BorderLayout.CENTER);
+        navPanel.add(extremeNav, BorderLayout.EAST);
+
+        // Panel de días de la semana
+        JPanel daysPanel = new JPanel(new GridLayout(1, 7, 5, 5));
+        daysPanel.setBackground(AppStyle.CARD_BG);
+        String[] days = {"Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"};
+        for (String day : days) {
+            JLabel lbl = new JLabel(day, SwingConstants.CENTER);
+            lbl.setFont(AppStyle.FONT_SMALL);
+            lbl.setForeground(AppStyle.TEXT_SECONDARY);
+            daysPanel.add(lbl);
+        }
+
+        // Panel de calendario (días del mes)
+        JPanel calendarPanel = new JPanel(new GridLayout(0, 7, 5, 5));
+        calendarPanel.setBackground(AppStyle.CARD_BG);
+
+        // Panel de botones
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.setBackground(AppStyle.CARD_BG);
+        
+        JButton todayBtn = ComponentFactory.createSecondaryButton("Hoy");
+        JButton cancelBtn = ComponentFactory.createSecondaryButton("Cancelar");
+        JButton okBtn = ComponentFactory.createPrimaryButton("Aceptar");
+        
+        buttonPanel.add(todayBtn);
+        buttonPanel.add(cancelBtn);
+        buttonPanel.add(okBtn);
+
+        mainPanel.add(navPanel, BorderLayout.NORTH);
+        mainPanel.add(daysPanel, BorderLayout.CENTER);
+        mainPanel.add(new JScrollPane(calendarPanel), BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        calendarDialog.add(mainPanel);
+
+        // Lógica del calendario
+        Calendar calendar = Calendar.getInstance();
+        try {
+            if (!tfFecha.getText().isEmpty()) {
+                Date currentDate = new SimpleDateFormat("dd/MM/yyyy").parse(tfFecha.getText());
+                calendar.setTime(currentDate);
+            }
+        } catch (Exception ex) {
+            calendar.setTime(new Date());
+        }
+
+        updateCalendar(calendar, calendarPanel, monthYearLabel);
+
+        // Listeners de los botones de navegación
+        prevYearBtn.addActionListener(e -> {
+            calendar.add(Calendar.YEAR, -1);
+            updateCalendar(calendar, calendarPanel, monthYearLabel);
+        });
+
+        nextYearBtn.addActionListener(e -> {
+            calendar.add(Calendar.YEAR, 1);
+            updateCalendar(calendar, calendarPanel, monthYearLabel);
+        });
+
+        prevMonthBtn.addActionListener(e -> {
+            calendar.add(Calendar.MONTH, -1);
+            updateCalendar(calendar, calendarPanel, monthYearLabel);
+        });
+
+        nextMonthBtn.addActionListener(e -> {
+            calendar.add(Calendar.MONTH, 1);
+            updateCalendar(calendar, calendarPanel, monthYearLabel);
+        });
+
+        todayBtn.addActionListener(e -> {
+            calendar.setTime(new Date());
+            updateCalendar(calendar, calendarPanel, monthYearLabel);
+        });
+
+        cancelBtn.addActionListener(e -> calendarDialog.dispose());
+
+        okBtn.addActionListener(e -> {
+            calendarDialog.dispose();
+        });
+
+        calendarDialog.setVisible(true);
+    }
+
+    private JButton createNavButton(String text) {
+        JButton btn = new JButton(text);
+        btn.setFont(AppStyle.FONT_BUTTON);
+        btn.setBackground(AppStyle.SECONDARY);
+        btn.setForeground(Color.WHITE);
+        btn.setBorder(BorderFactory.createEmptyBorder(5, 8, 5, 8));
+        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        return btn;
+    }
+
+    private void updateCalendar(Calendar calendar, JPanel calendarPanel, JLabel monthYearLabel) {
+        calendarPanel.removeAll();
+        
+        // Establecer el primer día del mes
+        Calendar tempCalendar = (Calendar) calendar.clone();
+        tempCalendar.set(Calendar.DAY_OF_MONTH, 1);
+        int firstDayOfWeek = tempCalendar.get(Calendar.DAY_OF_WEEK);
+        int daysInMonth = tempCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        
+        // Ajustar para que la semana comience en domingo
+        firstDayOfWeek = firstDayOfWeek - 1;
+        if (firstDayOfWeek == 0) firstDayOfWeek = 7;
+        
+        // Espacios en blanco para los días antes del primer día del mes
+        for (int i = 1; i < firstDayOfWeek; i++) {
+            calendarPanel.add(new JLabel(""));
+        }
+        
+        // Botones para cada día del mes
+        for (int day = 1; day <= daysInMonth; day++) {
+            JButton dayBtn = new JButton(String.valueOf(day));
+            dayBtn.setFont(AppStyle.FONT_INPUT);
+            dayBtn.setBackground(Color.WHITE);
+            dayBtn.setBorder(BorderFactory.createLineBorder(AppStyle.BORDER));
+            dayBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            
+            final int selectedDay = day;
+            dayBtn.addActionListener(e -> {
+                calendar.set(Calendar.DAY_OF_MONTH, selectedDay);
+                tfFecha.setText(new SimpleDateFormat("dd/MM/yyyy").format(calendar.getTime()));
+                ((Window) dayBtn.getTopLevelAncestor()).dispose();
+            });
+            
+            // Resaltar el día actual
+            Calendar today = Calendar.getInstance();
+            if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                calendar.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
+                day == today.get(Calendar.DAY_OF_MONTH)) {
+                dayBtn.setBackground(AppStyle.PRIMARY);
+                dayBtn.setForeground(Color.WHITE);
+            }
+            
+            calendarPanel.add(dayBtn);
+        }
+        
+        // Actualizar etiqueta de mes y año
+        String monthYear = new SimpleDateFormat("MMMM yyyy").format(calendar.getTime());
+        monthYearLabel.setText(monthYear.substring(0, 1).toUpperCase() + monthYear.substring(1));
+        
+        calendarPanel.revalidate();
+        calendarPanel.repaint();
     }
 
     private void showTimeDialog() {
-        // Implementación original del reloj (mantener sin cambios)
         JDialog timeDialog = new JDialog(this, "Seleccionar Hora", true);
-        timeDialog.setLayout(new BorderLayout());
-        timeDialog.setSize(200, 150);
+        timeDialog.setLayout(new BorderLayout(10, 10));
+        timeDialog.setSize(250, 180);
         timeDialog.setLocationRelativeTo(this);
+        timeDialog.getContentPane().setBackground(AppStyle.CARD_BG);
+
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBackground(AppStyle.CARD_BG);
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        // Panel del reloj
+        JPanel timePanel = new JPanel(new GridLayout(4, 3, 5, 5));
+        timePanel.setBackground(AppStyle.CARD_BG);
+
+        String[] hours = {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
+                         "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
+
+        for (String hour : hours) {
+            JButton hourBtn = createTimeButton(hour);
+            hourBtn.addActionListener(e -> {
+                String selectedTime = hourBtn.getText() + ":00";
+                try {
+                    spHora.setValue(new SimpleDateFormat("HH:mm").parse(selectedTime));
+                    timeDialog.dispose();
+                } catch (Exception ex) {
+                    // Ignorar error
+                }
+            });
+            timePanel.add(hourBtn);
+        }
+
+        // Panel de botones
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.setBackground(AppStyle.CARD_BG);
         
-        // ... (resto del código del reloj igual al original)
+        JButton cancelBtn = ComponentFactory.createSecondaryButton("Cancelar");
+        JButton okBtn = ComponentFactory.createPrimaryButton("Aceptar");
+        
+        buttonPanel.add(cancelBtn);
+        buttonPanel.add(okBtn);
+
+        mainPanel.add(new JLabel("Seleccione la hora:", SwingConstants.CENTER), BorderLayout.NORTH);
+        mainPanel.add(new JScrollPane(timePanel), BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        timeDialog.add(mainPanel);
+
+        cancelBtn.addActionListener(e -> timeDialog.dispose());
+        okBtn.addActionListener(e -> timeDialog.dispose());
+
+        timeDialog.setVisible(true);
+    }
+
+    private JButton createTimeButton(String text) {
+        JButton btn = new JButton(text);
+        btn.setFont(AppStyle.FONT_INPUT);
+        btn.setBackground(Color.WHITE);
+        btn.setBorder(BorderFactory.createLineBorder(AppStyle.BORDER));
+        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        return btn;
     }
 
     private void validateAndSave() {
@@ -345,8 +575,21 @@ public class EventDialog extends JDialog {
             if (!Validators.isValidName(tfNombre.getText()))
                 throw new IllegalArgumentException("Nombre inválido o vacío (máx. 100 caracteres)");
 
-            String fecha = new SimpleDateFormat("yyyy-MM-dd").format((Date) spFecha.getValue());
-            String hora  = new SimpleDateFormat("HH:mm").format((Date) spHora.getValue());
+            // Validar y formatear fecha
+            String fechaText = tfFecha.getText().trim();
+            if (fechaText.isEmpty()) {
+                throw new IllegalArgumentException("La fecha no puede estar vacía");
+            }
+            
+            String fecha;
+            try {
+                Date date = new SimpleDateFormat("dd/MM/yyyy").parse(fechaText);
+                fecha = new SimpleDateFormat("yyyy-MM-dd").format(date);
+            } catch (Exception ex) {
+                throw new IllegalArgumentException("Formato de fecha inválido. Use dd/MM/yyyy");
+            }
+
+            String hora = new SimpleDateFormat("HH:mm").format((Date) spHora.getValue());
 
             int capacidad = ((SpinnerNumberModel) spCapacidad.getModel()).getNumber().intValue();
             if (capacidad <= 0) throw new IllegalArgumentException("Capacidad debe ser > 0");
