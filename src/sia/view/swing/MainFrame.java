@@ -5,9 +5,8 @@ import sia.SistemaEventos;
 import sia.persistence.CsvStorage;
 import sia.AuthService;
 import sia.SessionContext;
-import sia.Usuario;  
+import sia.Usuario;
 import sia.view.swing.LoginFrame;
-
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -25,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.SortOrder;
-import java.util.Optional;       
 
 public class MainFrame extends JFrame {
 
@@ -41,15 +39,14 @@ public class MainFrame extends JFrame {
     private AuthService authService;
     private JLabel sessionLabel;
 
-    // ===== Ctor =====
-    // Acepta AuthService y asigna this.authService ===
+    // ===== Constructor =====
     public MainFrame(SistemaEventos sistema, AuthService authService) {
         super("Organizador de Eventos Universitario");
         this.sistema = sistema;
         this.authService = authService;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(1200, 700));
-        initUI(); // Construcción de la interfaz
+        initUI();
         updateSessionInfo();
     }
 
@@ -82,7 +79,6 @@ public class MainFrame extends JFrame {
         tfSearch.setPreferredSize(new Dimension(300, 34));
         tfSearch.setFont(tfSearch.getFont().deriveFont(13f));
 
-
         // Aplicar filtros en vivo al escribir
         tfSearch.getDocument().addDocumentListener(new DocumentListener() {
             private void apply() { applyFilters(tfSearch.getText()); }
@@ -90,6 +86,7 @@ public class MainFrame extends JFrame {
             public void removeUpdate(DocumentEvent e) { apply(); }
             public void changedUpdate(DocumentEvent e) { apply(); }
         });
+        
         // Aplicar filtro de alcance
         cbScope.addActionListener(e -> applyFilters(tfSearch.getText()));
 
@@ -224,27 +221,27 @@ public class MainFrame extends JFrame {
 
         JLabel titleActions = new JLabel("Acciones");
         titleActions.setFont(titleActions.getFont().deriveFont(Font.BOLD, 13f));
-        titleActions.setBorder(BorderFactory.createEmptyBorder(0,4,8,4));
+        titleActions.setBorder(BorderFactory.createEmptyBorder(0, 4, 8, 4));
         side.add(titleActions);
 
-        ActionCardButton bNew  = new ActionCardButton("  Nuevo Evento", IconKit.plus());
+        ActionCardButton bNew = new ActionCardButton("  Nuevo Evento", IconKit.plus());
         bNew.addActionListener(this::onNew);
         ActionCardButton bEdit = new ActionCardButton("  Editar Evento", IconKit.edit());
         bEdit.addActionListener(this::onEdit);
-        ActionCardButton bDel  = new ActionCardButton("  Eliminar Evento", IconKit.trash());
+        ActionCardButton bDel = new ActionCardButton("  Eliminar Evento", IconKit.trash());
         bDel.addActionListener(this::onDelete);
         ActionCardButton bAsis = new ActionCardButton("  Gestionar Asistentes", IconKit.users());
         bAsis.addActionListener(e -> onAsistentes());
-        ActionCardButton bRec  = new ActionCardButton("  Gestionar Recursos", IconKit.box());
+        ActionCardButton bRec = new ActionCardButton("  Gestionar Recursos", IconKit.box());
         bRec.addActionListener(e -> onRecursos());
-        ActionCardButton bRep  = new ActionCardButton("  Generar Reporte", IconKit.report());
+        ActionCardButton bRep = new ActionCardButton("  Generar Reporte", IconKit.report());
         bRep.addActionListener(e -> onReporte());
         ActionCardButton bSave = new ActionCardButton("  Guardar Todo", IconKit.save());
         bSave.addActionListener(e -> onGuardar());
-        ActionCardButton bAdv  = new ActionCardButton("  Búsqueda Avanzada", IconKit.searchPlus());
-        bAdv.addActionListener(e -> onAdvancedSearch());
 
-        for (JButton b : new JButton[]{bNew,bEdit,bDel,bAsis,bRec,bRep,bSave,bAdv}) {
+        // Botones sin búsqueda avanzada
+        JButton[] botones = {bNew, bEdit, bDel, bAsis, bRec, bRep, bSave};
+        for (JButton b : botones) {
             b.setAlignmentX(Component.LEFT_ALIGNMENT);
             b.setMaximumSize(new Dimension(220, 36));
             side.add(b);
@@ -263,14 +260,17 @@ public class MainFrame extends JFrame {
         getRootPane().getActionMap().put("save", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) { onGuardar(); }
         });
+        
         table.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK), "new");
         table.getActionMap().put("new", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) { onNew(e); }
         });
+        
         table.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
         table.getActionMap().put("delete", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) { onDelete(e); }
         });
+        
         // ESC limpia búsqueda
         tfSearch.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clear");
         tfSearch.getActionMap().put("clear", new AbstractAction() {
@@ -281,7 +281,6 @@ public class MainFrame extends JFrame {
         JPanel north = new JPanel(new BorderLayout());
         north.add(banner, BorderLayout.NORTH);
         north.add(toolbar, BorderLayout.SOUTH);
-        // Banner de sesión al centro
         north.add(createSessionBanner(), BorderLayout.CENTER);
 
         setLayout(new BorderLayout());
@@ -289,6 +288,7 @@ public class MainFrame extends JFrame {
         add(new JScrollPane(table), BorderLayout.CENTER);
         add(side, BorderLayout.EAST);
         add(statusLabel, BorderLayout.SOUTH);
+        
         pack();
         setLocationRelativeTo(null);
     }
@@ -297,37 +297,43 @@ public class MainFrame extends JFrame {
     private JPanel createSessionBanner() {
         JPanel sessionPanel = new JPanel(new BorderLayout());
         sessionPanel.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
-        sessionPanel.setBackground(new Color(240, 240, 240));
-
+        sessionPanel.setBackground(new Color(245, 245, 245));
+        
         sessionLabel = new JLabel("Sesión: Invitado");
-        JButton btnLogin = new JButton("Iniciar sesión");
+        sessionLabel.setFont(sessionLabel.getFont().deriveFont(Font.BOLD, 12f));
+        sessionLabel.setForeground(new Color(70, 70, 70));
+        
         JButton btnLogout = new JButton("Cerrar sesión");
-
-        btnLogin.addActionListener(e -> showLoginDialog());
+        btnLogout.setFont(btnLogout.getFont().deriveFont(11f));
+        btnLogout.setBackground(new Color(220, 80, 80));
+        btnLogout.setForeground(Color.WHITE);
+        btnLogout.setFocusPainted(false);
         btnLogout.addActionListener(e -> logout());
-
+        
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
-        buttonPanel.add(btnLogin);
-        buttonPanel.add(btnLogout);
         buttonPanel.setOpaque(false);
-
+        buttonPanel.add(btnLogout);
+        
         sessionPanel.add(sessionLabel, BorderLayout.WEST);
         sessionPanel.add(buttonPanel, BorderLayout.EAST);
-
+        
         updateSessionUI();
         return sessionPanel;
     }
 
     // ===== HELPERS de sesión =====
-    private void showLoginDialog() {
-        LoginFrame loginFrame = new LoginFrame(authService, sistema);
-        loginFrame.setVisible(true);
-        updateSessionUI();
-    }
-
     private void logout() {
-        SessionContext.get().logout();
-        updateSessionUI();
+        int confirm = JOptionPane.showConfirmDialog(this, 
+            "¿Está seguro de que desea cerrar sesión?", 
+            "Confirmar cierre de sesión", 
+            JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            SessionContext.get().logout();
+            this.dispose();
+            LoginFrame loginFrame = new LoginFrame(authService, sistema);
+            loginFrame.setVisible(true);
+        }
     }
 
     private void updateSessionUI() {
@@ -341,7 +347,6 @@ public class MainFrame extends JFrame {
     }
 
     // ===== Filtros & Helpers =====
-    /** Aplica el filtro por texto + filtro de alcance. */
     private void applyFilters(String text) {
         if (sorter == null) return;
         RowFilter<EventTableModel, Integer> rf = null;
@@ -354,17 +359,21 @@ public class MainFrame extends JFrame {
         } else if (scope == null) {
             sorter.setRowFilter(rf);
         } else {
-            sorter.setRowFilter(RowFilter.andFilter(java.util.Arrays.asList(rf, scope)));
+            java.util.List<RowFilter<EventTableModel, Integer>> filters = new java.util.ArrayList<>();
+            filters.add(rf);
+            filters.add(scope);
+            sorter.setRowFilter(RowFilter.andFilter(filters));
         }
         updateStatus();
     }
 
-    /** Filtro de alcance por (fecha/estado/cupos) en columnas fijas del modelo. */
     private RowFilter<EventTableModel, Integer> scopeFilter() {
         String sel = (String) cbScope.getSelectedItem();
         if (sel == null || "Todo".equals(sel)) return null;
-        int colFecha = 3, colCap = 6, colIns = 7, colEstado = 8;
+        
+        final int colFecha = 3, colCap = 6, colIns = 7, colEstado = 8;
         java.util.Date now = new java.util.Date();
+        
         switch (sel) {
             case "Próximos":
                 return new RowFilter<EventTableModel, Integer>() {
@@ -471,10 +480,10 @@ public class MainFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Selecciona un evento", "Info", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        ManageAsistentesDialog  dlg = new ManageAsistentesDialog(this, sistema, sel);
+        ManageAsistentesDialog dlg = new ManageAsistentesDialog(this, sistema, sel);
         dlg.setLocationRelativeTo(this);
         dlg.setVisible(true);
-        tableModel.fireTableDataChanged(); // refresca conteo de inscritos/estado
+        tableModel.fireTableDataChanged();
         updateStatus();
     }
 
@@ -488,13 +497,6 @@ public class MainFrame extends JFrame {
         dlg.setLocationRelativeTo(this);
         dlg.setVisible(true);
         tableModel.fireTableDataChanged();
-        updateStatus();
-    }
-
-    private void onAdvancedSearch() {
-        AdvancedSearchDialog dlg = new AdvancedSearchDialog(this, sistema, tableModel);
-        dlg.setLocationRelativeTo(this);
-        dlg.setVisible(true);
         updateStatus();
     }
 
