@@ -3,7 +3,6 @@ package sia.view.swing;
 import sia.AuthService;
 import sia.SistemaEventos;
 import sia.Usuario;
-import sia.Persona;
 import sia.SessionContext;
 
 import javax.swing.*;
@@ -34,23 +33,7 @@ public class LoginFrame extends JFrame {
 
     private static final int FIELD_COLUMNS = 24;
     private static final int BANNER_HEIGHT = 120;
-    private static final Color PRIMARY_COLOR = new Color(66, 133, 244);
-    private static final Color SECONDARY_COLOR = new Color(52, 168, 83);
-    private static final Color ACCENT_COLOR = new Color(219, 68, 55);
-    private static final Color BACKGROUND_COLOR = new Color(248, 249, 250);
-    private static final Color CARD_COLOR = Color.WHITE;
-    private static final Color TEXT_PRIMARY = new Color(33, 37, 41);
-    private static final Color TEXT_SECONDARY = new Color(108, 117, 125);
-    private static final Color BORDER_COLOR = new Color(206, 212, 218);
     
-    private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 28);
-    private static final Font SUBTITLE_FONT = new Font("Segoe UI", Font.PLAIN, 14);
-    private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 13);
-    private static final Font BUTTON_FONT = new Font("Segoe UI", Font.BOLD, 15);
-    private static final Font INPUT_FONT = new Font("Segoe UI", Font.PLAIN, 15);
-    private static final Font ERROR_FONT = new Font("Segoe UI", Font.PLAIN, 12);
-    private static final Font LINK_FONT = new Font("Segoe UI", Font.PLAIN, 13);
-
     private final AuthService authService;
     private final SistemaEventos sistema;
 
@@ -89,17 +72,7 @@ public class LoginFrame extends JFrame {
         this.authService = authService;
         this.sistema = sistema;
 
-        // Look and Feel consistente
-        try {
-            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-            // Mejorar el aspecto de los componentes
-            UIManager.put("TabbedPane.background", BACKGROUND_COLOR);
-            UIManager.put("TabbedPane.foreground", TEXT_PRIMARY);
-            UIManager.put("TabbedPane.selected", PRIMARY_COLOR);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        setupLookAndFeel();
         initUI();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 750);
@@ -107,25 +80,30 @@ public class LoginFrame extends JFrame {
         setResizable(false);
     }
 
+    private void setupLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            UIManager.put("TabbedPane.background", AppStyle.LIGHT_GRAY);
+            UIManager.put("TabbedPane.foreground", AppStyle.TEXT_PRIMARY);
+            UIManager.put("TabbedPane.selected", AppStyle.PRIMARY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initUI() {
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        mainPanel.setBackground(BACKGROUND_COLOR);
+        mainPanel.setBackground(AppStyle.LIGHT_GRAY);
 
         // ==== ENCABEZADO (BANNER) ====
-        JPanel imagePanel = new JPanel(new BorderLayout());
-        imagePanel.setPreferredSize(new Dimension(0, BANNER_HEIGHT));
-        imagePanel.setBackground(PRIMARY_COLOR);
-        imagePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
-
-        lblImage = new BannerLabel("/images/portada.png");
-        imagePanel.add(lblImage, BorderLayout.CENTER);
+        JPanel imagePanel = createHeaderPanel();
         mainPanel.add(imagePanel, BorderLayout.NORTH);
 
         // ==== PESTAÑAS ====
         tabbedPane = new JTabbedPane();
-        tabbedPane.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        tabbedPane.setBackground(BACKGROUND_COLOR);
+        tabbedPane.setFont(AppStyle.FONT_BUTTON);
+        tabbedPane.setBackground(AppStyle.LIGHT_GRAY);
         tabbedPane.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 
         tabbedPane.addTab("Iniciar Sesión", createLoginPanel());
@@ -133,13 +111,7 @@ public class LoginFrame extends JFrame {
         mainPanel.add(tabbedPane, BorderLayout.CENTER);
 
         // ==== PIE ====
-        JPanel footerPanel = new JPanel();
-        footerPanel.setBackground(new Color(240, 240, 240));
-        footerPanel.setBorder(BorderFactory.createEmptyBorder(12, 10, 12, 10));
-        JLabel footerLabel = new JLabel("Sistema de Gestión de Eventos Universitarios v1.0");
-        footerLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        footerLabel.setForeground(TEXT_SECONDARY);
-        footerPanel.add(footerLabel);
+        JPanel footerPanel = createFooterPanel();
         mainPanel.add(footerPanel, BorderLayout.SOUTH);
 
         setContentPane(mainPanel);
@@ -163,13 +135,31 @@ public class LoginFrame extends JFrame {
         });
     }
 
+    private JPanel createHeaderPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setPreferredSize(new Dimension(0, BANNER_HEIGHT));
+        panel.setBackground(AppStyle.PRIMARY);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+
+        lblImage = new BannerLabel("/images/portada.png");
+        panel.add(lblImage, BorderLayout.CENTER);
+        return panel;
+    }
+
+    private JPanel createFooterPanel() {
+        JPanel panel = new JPanel();
+        panel.setBackground(AppStyle.LIGHT_GRAY);
+        panel.setBorder(BorderFactory.createEmptyBorder(12, 10, 12, 10));
+        JLabel footerLabel = new JLabel("Sistema de Gestión de Eventos Universitarios v1.0");
+        footerLabel.setFont(AppStyle.FONT_SMALL);
+        footerLabel.setForeground(AppStyle.TEXT_SECONDARY);
+        panel.add(footerLabel);
+        return panel;
+    }
+
     private JPanel createLoginPanel() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(CARD_COLOR);
-        panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(222, 226, 230), 1, true),
-                BorderFactory.createEmptyBorder(30, 30, 25, 30)
-        ));
+        JPanel panel = ComponentFactory.createCardPanel();
+        panel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 8, 8, 8);
@@ -177,8 +167,8 @@ public class LoginFrame extends JFrame {
         gbc.weightx = 1.0;
 
         JLabel lblTitle = new JLabel("Accede a tu cuenta", SwingConstants.CENTER);
-        lblTitle.setFont(TITLE_FONT);
-        lblTitle.setForeground(TEXT_PRIMARY);
+        lblTitle.setFont(AppStyle.FONT_TITLE);
+        lblTitle.setForeground(AppStyle.TEXT_PRIMARY);
 
         // Mensaje de bienvenida
         JLabel lblWelcome = new JLabel(
@@ -188,56 +178,54 @@ public class LoginFrame extends JFrame {
             "</div></html>",
             SwingConstants.CENTER
         );
-        lblWelcome.setFont(SUBTITLE_FONT);
+        lblWelcome.setFont(AppStyle.FONT_SUBTITLE);
 
         JLabel lblUsername = new JLabel("Tu usuario:");
-        lblUsername.setFont(LABEL_FONT);
-        lblUsername.setForeground(TEXT_PRIMARY);
-        tfUsernameLogin = new JTextField(FIELD_COLUMNS);
-        tfUsernameLogin.setFont(INPUT_FONT);
-        tfUsernameLogin.setBorder(createInputBorder());
+        lblUsername.setFont(AppStyle.FONT_LABEL);
+        lblUsername.setForeground(AppStyle.TEXT_PRIMARY);
+        tfUsernameLogin = ComponentFactory.createTextField(FIELD_COLUMNS);
         tfUsernameLogin.setToolTipText("Ingresa tu nombre de usuario");
 
         JLabel lblPassword = new JLabel("Ingresa tu clave");
-        lblPassword.setFont(LABEL_FONT);
-        lblPassword.setForeground(TEXT_PRIMARY);
+        lblPassword.setFont(AppStyle.FONT_LABEL);
+        lblPassword.setForeground(AppStyle.TEXT_PRIMARY);
         pfPasswordLogin = new JPasswordField(FIELD_COLUMNS);
-        pfPasswordLogin.setFont(INPUT_FONT);
-        pfPasswordLogin.setBorder(createInputBorder());
+        pfPasswordLogin.setFont(AppStyle.FONT_INPUT);
+        pfPasswordLogin.setBorder(AppStyle.createInputBorder());
         pfPasswordLogin.setToolTipText("Ingresa tu contraseña");
         
         // Mostrar contraseña
         cbShowPasswordLogin = new JCheckBox("Ver contraseña");
-        cbShowPasswordLogin.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        cbShowPasswordLogin.setBackground(CARD_COLOR);
+        cbShowPasswordLogin.setFont(AppStyle.FONT_SMALL);
+        cbShowPasswordLogin.setBackground(AppStyle.CARD_BG);
         cbShowPasswordLogin.addActionListener(e -> {
             if (cbShowPasswordLogin.isSelected()) {
                 pfPasswordLogin.setEchoChar((char) 0);
             } else {
-                pfPasswordLogin.setEchoChar('•');
+                pfPasswordLogin.setEchoChar('*');
             }
         });
         
         // Recordarme
         cbRememberMe = new JCheckBox("Recordar mi usuario");
-        cbRememberMe.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        cbRememberMe.setBackground(CARD_COLOR);
+        cbRememberMe.setFont(AppStyle.FONT_SMALL);
+        cbRememberMe.setBackground(AppStyle.CARD_BG);
         
         // Advertencia de Bloq Mayús
-        lblCapsLockWarning = new JLabel("Mayúsculas activadas️");
-        lblCapsLockWarning.setFont(ERROR_FONT);
-        lblCapsLockWarning.setForeground(Color.ORANGE);
+        lblCapsLockWarning = new JLabel("Mayúsculas activadas");
+        lblCapsLockWarning.setFont(AppStyle.FONT_SMALL);
+        lblCapsLockWarning.setForeground(AppStyle.WARNING);
         lblCapsLockWarning.setVisible(false);
         
         // Mensaje de error
         lblLoginError = new JLabel(" ");
-        lblLoginError.setFont(ERROR_FONT);
-        lblLoginError.setForeground(ACCENT_COLOR);
+        lblLoginError.setFont(AppStyle.FONT_SMALL);
+        lblLoginError.setForeground(AppStyle.DANGER);
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 15, 0));
-        buttonPanel.setBackground(CARD_COLOR);
-        btnLogin = createSolidButton("Entrar", PRIMARY_COLOR);
-        btnExit  = createOutlineButton("Mejor después", ACCENT_COLOR);
+        buttonPanel.setBackground(AppStyle.CARD_BG);
+        btnLogin = ComponentFactory.createPrimaryButton("Entrar");
+        btnExit = ComponentFactory.createDangerButton("Mejor después");
         buttonPanel.add(btnLogin);
         buttonPanel.add(btnExit);
 
@@ -268,7 +256,7 @@ public class LoginFrame extends JFrame {
 
         gbc.gridy = 7; gbc.gridx = 0; gbc.gridwidth = 2;
         JPanel optionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        optionsPanel.setBackground(CARD_COLOR);
+        optionsPanel.setBackground(AppStyle.CARD_BG);
         optionsPanel.add(cbRememberMe);
         panel.add(optionsPanel, gbc);
 
@@ -280,7 +268,7 @@ public class LoginFrame extends JFrame {
         JButton btnIrARegistro = createLinkButton("¿Primera vez aquí?  Crea tu cuenta");
         btnIrARegistro.addActionListener(ev -> animateTabChange(1));
         JPanel linkPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        linkPanel.setBackground(CARD_COLOR);
+        linkPanel.setBackground(AppStyle.CARD_BG);
         linkPanel.add(btnIrARegistro);
         panel.add(linkPanel, gbc);
 
@@ -291,12 +279,8 @@ public class LoginFrame extends JFrame {
     }
 
     private JPanel createRegisterPanel() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(CARD_COLOR);
-        panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(222, 226, 230), 1, true),
-                BorderFactory.createEmptyBorder(30, 30, 25, 30)
-        ));
+        JPanel panel = ComponentFactory.createCardPanel();
+        panel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 8, 8, 8);
@@ -304,8 +288,8 @@ public class LoginFrame extends JFrame {
         gbc.weightx = 1.0;
 
         JLabel lblTitle = new JLabel("¡Únete ahora!", SwingConstants.CENTER);
-        lblTitle.setFont(TITLE_FONT);
-        lblTitle.setForeground(TEXT_PRIMARY);
+        lblTitle.setFont(AppStyle.FONT_TITLE);
+        lblTitle.setForeground(AppStyle.TEXT_PRIMARY);
 
         // Mensaje de bienvenida
         JLabel lblWelcome = new JLabel(
@@ -315,56 +299,54 @@ public class LoginFrame extends JFrame {
             "</div></html>",
             SwingConstants.CENTER
         );
-        lblWelcome.setFont(SUBTITLE_FONT);
+        lblWelcome.setFont(AppStyle.FONT_SUBTITLE);
 
         JLabel lblUsername = new JLabel("Tu usuario:");
-        lblUsername.setFont(LABEL_FONT);
-        lblUsername.setForeground(TEXT_PRIMARY);
-        tfUsernameRegister = new JTextField(FIELD_COLUMNS);
-        tfUsernameRegister.setFont(INPUT_FONT);
-        tfUsernameRegister.setBorder(createInputBorder());
+        lblUsername.setFont(AppStyle.FONT_LABEL);
+        lblUsername.setForeground(AppStyle.TEXT_PRIMARY);
+        tfUsernameRegister = ComponentFactory.createTextField(FIELD_COLUMNS);
         tfUsernameRegister.setToolTipText("Elige un nombre de usuario");
 
         JLabel lblPassword = new JLabel("Ingresa tu clave");
-        lblPassword.setFont(LABEL_FONT);
-        lblPassword.setForeground(TEXT_PRIMARY);
+        lblPassword.setFont(AppStyle.FONT_LABEL);
+        lblPassword.setForeground(AppStyle.TEXT_PRIMARY);
         pfPasswordRegister = new JPasswordField(FIELD_COLUMNS);
-        pfPasswordRegister.setFont(INPUT_FONT);
-        pfPasswordRegister.setBorder(createInputBorder());
+        pfPasswordRegister.setFont(AppStyle.FONT_INPUT);
+        pfPasswordRegister.setBorder(AppStyle.createInputBorder());
         pfPasswordRegister.setToolTipText("Crea una contraseña segura");
         
         // Mostrar contraseñas
         cbShowPasswordRegister = new JCheckBox("Ver claves");
-        cbShowPasswordRegister.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        cbShowPasswordRegister.setBackground(CARD_COLOR);
+        cbShowPasswordRegister.setFont(AppStyle.FONT_SMALL);
+        cbShowPasswordRegister.setBackground(AppStyle.CARD_BG);
         cbShowPasswordRegister.addActionListener(e -> {
             boolean mostrar = cbShowPasswordRegister.isSelected();
-            pfPasswordRegister.setEchoChar(mostrar ? (char) 0 : '•');
-            pfConfirmPassword.setEchoChar(mostrar ? (char) 0 : '•');
+            pfPasswordRegister.setEchoChar(mostrar ? (char) 0 : '*');
+            pfConfirmPassword.setEchoChar(mostrar ? (char) 0 : '*');
         });
 
         JLabel lblConfirm = new JLabel("Confirma tu contraseña");
-        lblConfirm.setFont(LABEL_FONT);
-        lblConfirm.setForeground(TEXT_PRIMARY);
+        lblConfirm.setFont(AppStyle.FONT_LABEL);
+        lblConfirm.setForeground(AppStyle.TEXT_PRIMARY);
         pfConfirmPassword = new JPasswordField(FIELD_COLUMNS);
-        pfConfirmPassword.setFont(INPUT_FONT);
-        pfConfirmPassword.setBorder(createInputBorder());
+        pfConfirmPassword.setFont(AppStyle.FONT_INPUT);
+        pfConfirmPassword.setBorder(AppStyle.createInputBorder());
         pfConfirmPassword.setToolTipText("Repite tu contraseña");
 
         JLabel lblRol = new JLabel("Soy...");
-        lblRol.setFont(LABEL_FONT);
-        lblRol.setForeground(TEXT_PRIMARY);
+        lblRol.setFont(AppStyle.FONT_LABEL);
+        lblRol.setForeground(AppStyle.TEXT_PRIMARY);
         cbRol = new JComboBox<>(new String[]{"ALUMNO", "PROFESOR"});
-        cbRol.setFont(INPUT_FONT);
-        cbRol.setBackground(CARD_COLOR);
-        cbRol.setBorder(createInputBorder());
+        cbRol.setFont(AppStyle.FONT_INPUT);
+        cbRol.setBackground(AppStyle.CARD_BG);
+        cbRol.setBorder(AppStyle.createInputBorder());
         
         // Mensaje de error
         lblRegisterError = new JLabel(" ");
-        lblRegisterError.setFont(ERROR_FONT);
-        lblRegisterError.setForeground(ACCENT_COLOR);
+        lblRegisterError.setFont(AppStyle.FONT_SMALL);
+        lblRegisterError.setForeground(AppStyle.DANGER);
 
-        btnRegister = createSolidButton("Crear cuenta", SECONDARY_COLOR);
+        btnRegister = ComponentFactory.createSuccessButton("Crear cuenta");
 
         // Layout
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
@@ -407,7 +389,7 @@ public class LoginFrame extends JFrame {
         JButton btnIrALogin = createLinkButton("¿Ya tienes cuenta? Iniciar sesión");
         btnIrALogin.addActionListener(ev -> animateTabChange(0));
         JPanel linkPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        linkPanel.setBackground(CARD_COLOR);
+        linkPanel.setBackground(AppStyle.CARD_BG);
         linkPanel.add(btnIrALogin);
         panel.add(linkPanel, gbc);
 
@@ -417,101 +399,15 @@ public class LoginFrame extends JFrame {
         return panel;
     }
 
-    private Border createInputBorder() {
-        return BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(BORDER_COLOR, 1),
-            BorderFactory.createEmptyBorder(10, 12, 10, 12)
-        );
-    }
-
-    /** Botones con color sólido */
-    private JButton createSolidButton(String text, Color color) {
-        JButton button = new JButton(text) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                if (isEnabled()) {
-                    if (getModel().isPressed()) {
-                        g2.setColor(color.darker());
-                    } else if (getModel().isRollover()) {
-                        g2.setColor(color.brighter());
-                    } else {
-                        g2.setColor(color);
-                    }
-                } else {
-                    g2.setColor(new Color(200, 200, 200));
-                }
-
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
-                g2.dispose();
-                
-                super.paintComponent(g);
-            }
-        };
-
-        button.setFont(BUTTON_FONT);
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        button.setContentAreaFilled(false);
-        button.setOpaque(false);
-        button.setBorder(BorderFactory.createEmptyBorder(12, 25, 12, 25));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        return button;
-    }
-    
-    /** Botón con borde */
-    private JButton createOutlineButton(String text, Color color) {
-        JButton button = new JButton(text) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                
-                if (getModel().isPressed()) {
-                    g2.setColor(color);
-                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
-                    g2.setColor(Color.WHITE);
-                } else {
-                    g2.setColor(Color.WHITE);
-                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
-                    g2.setColor(color);
-                    g2.setStroke(new BasicStroke(2));
-                    g2.drawRoundRect(1, 1, getWidth()-2, getHeight()-2, 10, 10);
-                    
-                    if (getModel().isRollover()) {
-                        g2.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 30));
-                        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
-                    }
-                }
-                g2.dispose();
-                
-                super.paintComponent(g);
-            }
-        };
-
-        button.setFont(BUTTON_FONT);
-        button.setForeground(ACCENT_COLOR);
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        button.setContentAreaFilled(false);
-        button.setOpaque(false);
-        button.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        return button;
-    }
-    
     /** Botón estilo enlace */
     private JButton createLinkButton(String text) {
         JButton link = new JButton(text);
-        link.setFont(LINK_FONT);
+        link.setFont(AppStyle.FONT_SMALL);
         link.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         link.setContentAreaFilled(false);
         link.setFocusPainted(false);
         link.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        link.setForeground(PRIMARY_COLOR);
+        link.setForeground(AppStyle.PRIMARY);
         link.setToolTipText(text);
         link.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override public void mouseEntered(java.awt.event.MouseEvent e) {
@@ -524,19 +420,16 @@ public class LoginFrame extends JFrame {
         return link;
     }
     
-    // Resto del código se mantiene igual (métodos saveLastUser, restoreLastUser, performLogin, performRegister, etc.)
-    // ... [El resto de los métodos permanecen sin cambios] ...
-    
     /** Label que dibuja imagen "cover" */
     private static class BannerLabel extends JLabel {
         private BufferedImage img;
         public BannerLabel(String resource) {
             setOpaque(true);
-            setBackground(new Color(66, 133, 244));
+            setBackground(AppStyle.PRIMARY);
             try { img = ImageIO.read(getClass().getResource(resource)); }
             catch (Exception e) { 
                 img = null; 
-                setBackground(new Color(66, 133, 244));
+                setBackground(AppStyle.PRIMARY);
             }
         }
 
@@ -546,8 +439,8 @@ public class LoginFrame extends JFrame {
                 // Dibujar gradiente si no hay imagen
                 Graphics2D g2d = (Graphics2D) g;
                 GradientPaint gradient = new GradientPaint(
-                    0, 0, new Color(66, 133, 244), 
-                    getWidth(), getHeight(), new Color(25, 103, 210)
+                    0, 0, AppStyle.PRIMARY, 
+                    getWidth(), getHeight(), AppStyle.PRIMARY_DARK
                 );
                 g2d.setPaint(gradient);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
@@ -745,8 +638,8 @@ public class LoginFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Error durante el registro: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
             // Limpiar contraseñas por seguridad
-            Arrays.fill(password, ' ');
-            Arrays.fill(confirmPassword, ' ');
+            Arrays.fill(password, '*');
+            Arrays.fill(confirmPassword, '*');
         }
     }  
 }

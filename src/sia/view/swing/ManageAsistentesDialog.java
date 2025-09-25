@@ -28,10 +28,9 @@ public class ManageAsistentesDialog extends JDialog {
     }
 
     private void initUI() {
-        // Cambiar a BoxLayout vertical para mejor control
         setLayout(new BorderLayout(10, 10));
-        setSize(900, 650); // Aumentar tamaño para mejor visualización
-        setMinimumSize(new Dimension(800, 500));
+        setSize(900, 650);
+        getContentPane().setBackground(AppStyle.LIGHT_GRAY);
 
         // 1. Panel superior con información del evento
         JPanel headerPanel = crearHeaderPanel();
@@ -42,35 +41,29 @@ public class ManageAsistentesDialog extends JDialog {
         // 3. Panel inferior con botones principales
         JPanel buttonPanel = crearButtonPanel();
 
-        // Añadir todos los paneles en el orden correcto
         add(headerPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
     private JPanel crearHeaderPanel() {
-        JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
-        panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createTitledBorder("📊 Información del Evento"),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
-        panel.setBackground(new Color(240, 245, 255));
+        JPanel panel = ComponentFactory.createCardPanel();
+        panel.setLayout(new GridLayout(0, 2, 5, 5));
 
-        panel.add(crearEtiquetaNegrita("Evento:"));
-        panel.add(new JLabel(evento.getNombre()));
+        panel.add(ComponentFactory.createLabel("Evento:"));
+        panel.add(ComponentFactory.createLabel(evento.getNombre()));
         
-        panel.add(crearEtiquetaNegrita("Tipo:"));
-        panel.add(new JLabel(evento.getTipo()));
+        panel.add(ComponentFactory.createLabel("Tipo:"));
+        panel.add(ComponentFactory.createLabel(evento.getTipo()));
         
-        panel.add(crearEtiquetaNegrita("Fecha/Hora:"));
-        panel.add(new JLabel(evento.getFecha() + " " + evento.getHora()));
+        panel.add(ComponentFactory.createLabel("Fecha/Hora:"));
+        panel.add(ComponentFactory.createLabel(evento.getFecha() + " " + evento.getHora()));
         
-        panel.add(crearEtiquetaNegrita("Capacidad:"));
-        panel.add(new JLabel(String.valueOf(evento.getCapacidad())));
+        panel.add(ComponentFactory.createLabel("Capacidad:"));
+        panel.add(ComponentFactory.createLabel(String.valueOf(evento.getCapacidad())));
         
-        lblEstadoCapacidad = new JLabel();
-        lblEstadoCapacidad.setFont(lblEstadoCapacidad.getFont().deriveFont(Font.BOLD, 12));
-        panel.add(crearEtiquetaNegrita("Estado:"));
+        lblEstadoCapacidad = ComponentFactory.createLabel("");
+        panel.add(ComponentFactory.createLabel("Estado:"));
         panel.add(lblEstadoCapacidad);
 
         return panel;
@@ -78,6 +71,7 @@ public class ManageAsistentesDialog extends JDialog {
 
     private JPanel crearCenterPanel() {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
+        panel.setBackground(AppStyle.LIGHT_GRAY);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         // Toolbar de búsqueda
@@ -93,13 +87,13 @@ public class ManageAsistentesDialog extends JDialog {
     }
 
     private JPanel crearSearchPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
-        panel.setBorder(BorderFactory.createTitledBorder("🔍 Buscar y Filtrar"));
+        JPanel panel = ComponentFactory.createCardPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
         
-        JTextField tfBusqueda = new JTextField(25);
+        JTextField tfBusqueda = ComponentFactory.createTextField(25);
         tfBusqueda.setToolTipText("Buscar por nombre, email o ID...");
         
-        JComboBox<String> cbFiltro = new JComboBox<>(new String[]{"Todos", "Estudiantes", "Profesores"});
+        JComboBox<String> cbFiltro = ComponentFactory.createComboBox(new String[]{"Todos", "Estudiantes", "Profesores"});
         
         tfBusqueda.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             public void insertUpdate(javax.swing.event.DocumentEvent e) { filtrarAsistentes(tfBusqueda.getText()); }
@@ -107,9 +101,9 @@ public class ManageAsistentesDialog extends JDialog {
             public void changedUpdate(javax.swing.event.DocumentEvent e) { filtrarAsistentes(tfBusqueda.getText()); }
         });
         
-        panel.add(new JLabel("Texto:"));
+        panel.add(ComponentFactory.createLabel("Texto:"));
         panel.add(tfBusqueda);
-        panel.add(new JLabel("Filtrar por:"));
+        panel.add(ComponentFactory.createLabel("Filtrar por:"));
         panel.add(cbFiltro);
         
         return panel;
@@ -122,9 +116,10 @@ public class ManageAsistentesDialog extends JDialog {
         // Mejorar apariencia de la tabla
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setRowHeight(30);
-        table.setFont(table.getFont().deriveFont(13f));
-        table.getTableHeader().setFont(table.getFont().deriveFont(Font.BOLD, 13f));
-        table.setGridColor(new Color(220, 220, 220));
+        table.setFont(AppStyle.FONT_INPUT);
+        table.getTableHeader().setFont(AppStyle.FONT_LABEL);
+        table.setGridColor(AppStyle.BORDER);
+        table.setBackground(Color.WHITE);
         
         // Ajustar anchos de columnas
         table.getColumnModel().getColumn(0).setPreferredWidth(200); // Nombre
@@ -133,31 +128,35 @@ public class ManageAsistentesDialog extends JDialog {
         table.getColumnModel().getColumn(3).setPreferredWidth(120); // Estado
         
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(BorderFactory.createTitledBorder("👥 Lista de Asistentes"));
+        scrollPane.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createTitledBorder(" Lista de Asistentes"),
+            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
         scrollPane.setPreferredSize(new Dimension(800, 300));
         
         return scrollPane;
     }
 
     private JPanel crearButtonPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(AppStyle.LIGHT_GRAY);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Crear botones con colores distintivos
-        JButton btnAgregarCatalogo = crearBotonGrande("📚 Agregar desde Catálogo", new Color(70, 130, 180));
-        JButton btnNuevoAsistente = crearBotonGrande("➕ Nuevo Asistente", new Color(60, 179, 113));
-        JButton btnQuitar = crearBotonGrande("❌ Quitar Seleccionado", new Color(205, 92, 92));
-        JButton btnAsignarme = crearBotonGrande("👤 Asignarme a Mí", new Color(106, 90, 205));
-        JButton btnCerrar = crearBotonGrande("🚪 Cerrar", new Color(120, 120, 120));
+        // Crear botones con ComponentFactory
+        JButton btnAgregarCatalogo = ComponentFactory.createPrimaryButton("§ Agregar desde Catálogo");
+        JButton btnNuevoAsistente = ComponentFactory.createSuccessButton("+ Nuevo Asistente");
+        JButton btnQuitar = ComponentFactory.createDangerButton(" Quitar Seleccionado");
+        JButton btnAsignarme = ComponentFactory.createSecondaryButton(" Asignarme a Mí");
+        JButton btnCerrar = ComponentFactory.createWarningButton(" Cerrar");
 
-        // Hacer el botón SIEMPRE visible
+        // Configurar botón "Asignarme a Mí"
         boolean puedeAsignarse = SessionContext.get().isLoggedIn() && 
                                 SessionContext.get().getPersona() != null;
 
         if (!puedeAsignarse) {
-            // En lugar de deshabilitarlo, cambiar el color y tooltip
-            btnAsignarme.setBackground(new Color(180, 180, 180)); // Gris
-            btnAsignarme.setToolTipText("💡 Inicie sesión con una persona vinculada para usar esta función");
+            btnAsignarme.setBackground(AppStyle.TEXT_SECONDARY);
+            btnAsignarme.setToolTipText(" Inicie sesión con una persona vinculada para usar esta función");
         } else {
             btnAsignarme.setToolTipText("Inscribirme con mis datos de usuario");
         }
@@ -179,51 +178,20 @@ public class ManageAsistentesDialog extends JDialog {
 
         // Mejorar el layout para evitar desbordamiento
         JPanel firstRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
+        firstRow.setBackground(AppStyle.LIGHT_GRAY);
         firstRow.add(btnAgregarCatalogo);
         firstRow.add(btnNuevoAsistente);
         firstRow.add(btnQuitar);
 
         JPanel secondRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
+        secondRow.setBackground(AppStyle.LIGHT_GRAY);
         secondRow.add(btnAsignarme);
         secondRow.add(btnCerrar);
 
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.add(firstRow);
         panel.add(secondRow);
 
         return panel;
-    }
-
-    private JButton crearBotonGrande(String texto, Color colorFondo) {
-        JButton boton = new JButton(texto);
-        boton.setFont(boton.getFont().deriveFont(Font.BOLD, 13f));
-        boton.setForeground(Color.WHITE);
-        boton.setBackground(colorFondo);
-        boton.setFocusPainted(false);
-        boton.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(colorFondo.darker(), 2),
-            BorderFactory.createEmptyBorder(10, 15, 10, 15)
-        ));
-        boton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        boton.setPreferredSize(new Dimension(220, 45));
-        
-        // Efecto hover
-        boton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                boton.setBackground(colorFondo.brighter());
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                boton.setBackground(colorFondo);
-            }
-        });
-        
-        return boton;
-    }
-
-    private JLabel crearEtiquetaNegrita(String texto) {
-        JLabel label = new JLabel(texto);
-        label.setFont(label.getFont().deriveFont(Font.BOLD));
-        return label;
     }
 
     private void actualizarEstadoCapacidad() {
@@ -234,15 +202,15 @@ public class ManageAsistentesDialog extends JDialog {
         Color color;
         
         if (capacidad <= 0) {
-            texto = "✅ " + inscritos + " inscritos (sin límite)";
-            color = new Color(0, 100, 200);
+            texto = " " + inscritos + " inscritos (sin límite)";
+            color = AppStyle.SUCCESS;
         } else if (inscritos < capacidad) {
             int disponibles = capacidad - inscritos;
-            texto = "✅ " + inscritos + " / " + capacidad + " inscritos (" + disponibles + " disponibles)";
-            color = new Color(0, 128, 0);
+            texto = " " + inscritos + " / " + capacidad + " inscritos (" + disponibles + " disponibles)";
+            color = AppStyle.SUCCESS;
         } else {
-            texto = "❌ COMPLETO - " + inscritos + " / " + capacidad + " inscritos";
-            color = Color.RED;
+            texto = " COMPLETO - " + inscritos + " / " + capacidad + " inscritos";
+            color = AppStyle.DANGER;
         }
         
         lblEstadoCapacidad.setText(texto);
@@ -273,7 +241,7 @@ public class ManageAsistentesDialog extends JDialog {
             int capacidad = evento.getCapacidad();
             if (capacidad > 0 && evento.getAsistentes().size() >= capacidad) {
                 JOptionPane.showMessageDialog(this, 
-                    "❌ El evento está completo. No se pueden agregar más asistentes.", 
+                    " El evento está completo. No se pueden agregar más asistentes.", 
                     "Capacidad Llena", JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -282,7 +250,7 @@ public class ManageAsistentesDialog extends JDialog {
             for (Persona p : evento.getAsistentes()) {
                 if (p.getId().equals(nuevaPersona.getId())) {
                     JOptionPane.showMessageDialog(this, 
-                        "⚠️ Esta persona ya está inscrita en el evento.", 
+                        " Esta persona ya está inscrita en el evento.", 
                         "Duplicado", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
@@ -292,7 +260,7 @@ public class ManageAsistentesDialog extends JDialog {
             tableModel.setAsistentes(evento.getAsistentes());
             actualizarEstadoCapacidad();
             JOptionPane.showMessageDialog(this, 
-                "✅ Asistente agregado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                " Asistente agregado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -300,7 +268,7 @@ public class ManageAsistentesDialog extends JDialog {
         int row = table.getSelectedRow();
         if (row < 0) {
             JOptionPane.showMessageDialog(this, 
-                "ℹ️ Seleccione un asistente de la lista", 
+                " Seleccione un asistente de la lista", 
                 "Información", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -316,7 +284,7 @@ public class ManageAsistentesDialog extends JDialog {
                 tableModel.setAsistentes(evento.getAsistentes());
                 actualizarEstadoCapacidad();
                 JOptionPane.showMessageDialog(this, 
-                    "✅ Asistente eliminado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    " Asistente eliminado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -326,7 +294,7 @@ public class ManageAsistentesDialog extends JDialog {
     
         if (yo == null) {
             JOptionPane.showMessageDialog(this, 
-                "❌ Para asignarse a este evento, primero debe:\n\n" +
+                " Para asignarse a este evento, primero debe:\n\n" +
                 "1. Iniciar sesión en el sistema\n" +
                 "2. Tener una persona vinculada a su cuenta\n\n" +
                 "Contacte al administrador si necesita vincular una persona.",
@@ -338,7 +306,7 @@ public class ManageAsistentesDialog extends JDialog {
         for (Persona p : evento.getAsistentes()) {
             if (p.getId().equals(yo.getId())) {
                 JOptionPane.showMessageDialog(this, 
-                    "ℹ️ Ya está inscrito en este evento.", 
+                    " Ya está inscrito en este evento.", 
                     "Información", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
@@ -348,7 +316,7 @@ public class ManageAsistentesDialog extends JDialog {
         int capacidad = evento.getCapacidad();
         if (capacidad > 0 && evento.getAsistentes().size() >= capacidad) {
             JOptionPane.showMessageDialog(this, 
-                "❌ No es posible inscribirse: el evento está completo.", 
+                " No es posible inscribirse: el evento está completo.", 
                 "Capacidad Llena", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -358,7 +326,7 @@ public class ManageAsistentesDialog extends JDialog {
         tableModel.setAsistentes(evento.getAsistentes());
         actualizarEstadoCapacidad();
         JOptionPane.showMessageDialog(this, 
-            "✅ ¡Inscripción realizada correctamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            " ¡Inscripción realizada correctamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // Modelo de tabla para asistentes
@@ -417,7 +385,7 @@ public class ManageAsistentesDialog extends JDialog {
                 case 0: return p.getNombre();
                 case 1: return p.getEmail();
                 case 2: return p.getTipo();
-                case 3: return sistema.yaInscrito(evento, p) ? "❌ Ya inscrito" : "✅ Disponible";
+                case 3: return sistema.yaInscrito(evento, p) ? " Ya inscrito" : " Disponible";
                 default: return "";
             }
         }
@@ -427,4 +395,5 @@ public class ManageAsistentesDialog extends JDialog {
                    asistentesFiltrados.get(row) : null;
         }
     }
-}   
+}
+

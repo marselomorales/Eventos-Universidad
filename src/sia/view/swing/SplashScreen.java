@@ -30,7 +30,7 @@ public final class SplashScreen {
         JLabel title = new JLabel("Organizador de Eventos Universitario", SwingConstants.CENTER);
         title.setFont(title.getFont().deriveFont(Font.BOLD, 18f));
 
-        JLabel subtitle = new JLabel("Cargando datos…", SwingConstants.CENTER);
+        JLabel subtitle = new JLabel("Cargando datos", SwingConstants.CENTER);
         subtitle.setFont(subtitle.getFont().deriveFont(Font.PLAIN, 13f));
         subtitle.setForeground(new Color(80, 80, 80));
 

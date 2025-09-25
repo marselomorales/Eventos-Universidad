@@ -19,18 +19,17 @@ public class BannerPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         
-        // Gradiente moderno en azules profesionales
-        Color c1 = new Color(41, 128, 185);
-        Color c2 = new Color(52, 152, 219);
+        // Usar colores de AppStyle
+        Color c1 = AppStyle.PRIMARY;
+        Color c2 = AppStyle.SECONDARY;
         g2.setPaint(new GradientPaint(0, 0, c1, getWidth(), getHeight(), c2));
         g2.fillRect(0, 0, getWidth(), getHeight());
         
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         
-        // Títulos con tipografía moderna
-        g2.setColor(Color.WHITE);
-        Font fTitle = new Font("Segoe UI", Font.BOLD, 28);
-        Font fSub = new Font("Segoe UI", Font.PLAIN, 14);
+        // Usar fuentes de AppStyle
+        Font fTitle = AppStyle.FONT_TITLE;
+        Font fSub = AppStyle.FONT_SUBTITLE;
         
         int y = 40;
         

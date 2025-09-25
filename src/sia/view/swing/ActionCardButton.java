@@ -2,13 +2,13 @@ package sia.view.swing;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D; 
+import java.awt.geom.RoundRectangle2D;
 
 /** Botón tipo "card": redondeado, con icono y texto, look moderno sin librerías. */
 public class ActionCardButton extends JButton {
-    private Color bg = new Color(248,248,248);
-    private Color fgText = new Color(33,33,33);
-    private Color outline = new Color(220,220,220);
+    private Color bg = AppStyle.CARD_BG;
+    private Color fgText = AppStyle.TEXT_PRIMARY;
+    private Color outline = AppStyle.BORDER;
 
     public ActionCardButton(String text, Icon icon) {
         super(text, icon);
@@ -19,7 +19,7 @@ public class ActionCardButton extends JButton {
         setContentAreaFilled(false);
         setBorderPainted(false);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        setFont(getFont().deriveFont(Font.BOLD, 12f));
+        setFont(AppStyle.FONT_BUTTON);
     }
 
     @Override
@@ -27,18 +27,18 @@ public class ActionCardButton extends JButton {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        int arc = 16;
+        int arc = AppStyle.BORDER_RADIUS * 2; // 16
         Shape r = new RoundRectangle2D.Float(0.5f, 0.5f, getWidth()-1f, getHeight()-1f, arc, arc);
 
         // elevación leve
         if (getModel().isRollover()) {
-            g2.setColor(new Color(245,245,245));
+            g2.setColor(bg.brighter());
         } else {
             g2.setColor(bg);
         }
-        g2.fill((java.awt.Shape) r);
+        g2.fill(r);
         g2.setColor(outline);
-        g2.draw((java.awt.Shape) r);
+        g2.draw(r);
 
         // delega icono/texto
         super.paintComponent(g);

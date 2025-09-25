@@ -6,7 +6,6 @@ import sia.persistence.CsvStorage;
 import sia.AuthService;
 import sia.SessionContext;
 import sia.Usuario;
-import sia.view.swing.LoginFrame;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -15,33 +14,28 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 import javax.swing.RowFilter;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.RowSorter.SortKey;
-import javax.swing.SortOrder;
 
 public class MainFrame extends JFrame {
 
     // ===== Campos =====
     private final SistemaEventos sistema;
+    private final AuthService authService;
     private EventTableModel tableModel;
     private JTable table;
     private TableRowSorter<EventTableModel> sorter;
     private JLabel statusLabel;
     private JComboBox<String> cbScope;
-
-    // === Sesión ===
-    private AuthService authService;
     private JLabel sessionLabel;
 
     // ===== Constructor =====
     public MainFrame(SistemaEventos sistema, AuthService authService) {
-        super("Organizador de Eventos Universitario");
+        super("SIA2 · Gestión de Eventos");
         this.sistema = sistema;
         this.authService = authService;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,17 +44,11 @@ public class MainFrame extends JFrame {
         updateSessionInfo();
     }
 
-    // ===== Util =====
-    private JButton big(String text) {
-        JButton b = new JButton(text);
-        b.setFont(b.getFont().deriveFont(Font.BOLD, 13f));
-        b.setMargin(new Insets(8, 14, 8, 14));
-        b.setFocusable(false);
-        return b;
-    }
-
     // ===== UI principal =====
     private void initUI() {
+        // Configurar el fondo principal
+        getContentPane().setBackground(AppStyle.LIGHT_GRAY);
+        
         // --- Banner superior ---
         BannerPanel banner = new BannerPanel(
                 "Organizador de Eventos Universitario",
@@ -70,14 +58,13 @@ public class MainFrame extends JFrame {
         // --- Toolbar con búsqueda y alcance ---
         JToolBar toolbar = new JToolBar();
         toolbar.setFloatable(false);
+        toolbar.setBackground(AppStyle.CARD_BG);
         toolbar.setBorder(BorderFactory.createEmptyBorder(6, 10, 6, 10));
 
-        cbScope = new JComboBox<>(new String[]{"Todo", "Próximos", "Pasados", "Con cupo", "Completos"});
-        cbScope.setFocusable(false);
+        cbScope = ComponentFactory.createComboBox(new String[]{"Todo", "Próximos", "Pasados", "Con cupo", "Completos"});
 
-        JTextField tfSearch = new JTextField();
-        tfSearch.setPreferredSize(new Dimension(300, 34));
-        tfSearch.setFont(tfSearch.getFont().deriveFont(13f));
+        JTextField tfSearch = ComponentFactory.createTextField(20);
+        tfSearch.setPreferredSize(new Dimension(300, AppStyle.INPUT_HEIGHT));
 
         // Aplicar filtros en vivo al escribir
         tfSearch.getDocument().addDocumentListener(new DocumentListener() {
@@ -90,10 +77,8 @@ public class MainFrame extends JFrame {
         // Aplicar filtro de alcance
         cbScope.addActionListener(e -> applyFilters(tfSearch.getText()));
 
-        JLabel lblBuscar = new JLabel("Buscar:");
-        lblBuscar.setFont(lblBuscar.getFont().deriveFont(Font.BOLD, 13f));
-        JLabel lblScope = new JLabel("  •  Ámbito:");
-        lblScope.setFont(lblScope.getFont().deriveFont(13f));
+        JLabel lblBuscar = ComponentFactory.createLabel("Buscar:");
+        JLabel lblScope = ComponentFactory.createLabel("    Alcance:");
 
         toolbar.add(lblBuscar);
         toolbar.add(Box.createHorizontalStrut(6));
@@ -109,18 +94,20 @@ public class MainFrame extends JFrame {
             public Component prepareRenderer(javax.swing.table.TableCellRenderer r, int row, int column) {
                 Component c = super.prepareRenderer(r, row, column);
                 if (!isRowSelected(row)) {
-                    c.setBackground((row % 2 == 0) ? new Color(252, 252, 252) : new Color(245, 248, 252));
+                    c.setBackground((row % 2 == 0) ? AppStyle.CARD_BG : AppStyle.LIGHT_GRAY);
                 }
                 return c;
             }
         };
         table.setFillsViewportHeight(true);
-        table.setRowHeight(24);
-        table.setFont(table.getFont().deriveFont(12f));
+        table.setRowHeight(28);
+        table.setFont(AppStyle.FONT_INPUT);
 
-        // Encabezado
+        // Encabezado de tabla
         JTableHeader th = table.getTableHeader();
-        th.setFont(th.getFont().deriveFont(Font.BOLD, 12.5f));
+        th.setFont(AppStyle.FONT_LABEL);
+        th.setBackground(AppStyle.PRIMARY);
+        th.setForeground(Color.WHITE);
         th.setReorderingAllowed(false);
 
         // Sorter + filtro
@@ -156,7 +143,7 @@ public class MainFrame extends JFrame {
             table.getColumnModel().getColumn(estadoCol).setCellRenderer(badgeRenderer);
         }
 
-        // Centrado para numéricas
+        // Centrado para columnas numéricas
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(JLabel.CENTER);
         if (tableModel.getColumnCount() >= 8) {
@@ -217,41 +204,42 @@ public class MainFrame extends JFrame {
         // --- Sidebar de acciones ---
         JPanel side = new JPanel();
         side.setLayout(new BoxLayout(side, BoxLayout.Y_AXIS));
-        side.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        side.setBackground(AppStyle.CARD_BG);
+        side.setBorder(AppStyle.createBorder());
 
-        JLabel titleActions = new JLabel("Acciones");
-        titleActions.setFont(titleActions.getFont().deriveFont(Font.BOLD, 13f));
+        JLabel titleActions = ComponentFactory.createLabel("Acciones");
         titleActions.setBorder(BorderFactory.createEmptyBorder(0, 4, 8, 4));
         side.add(titleActions);
 
-        ActionCardButton bNew = new ActionCardButton("  Nuevo Evento", IconKit.plus());
+        JButton bNew = ComponentFactory.createPrimaryButton("Nuevo Evento");
+        JButton bEdit = ComponentFactory.createSecondaryButton("Editar Evento");
+        JButton bDel = ComponentFactory.createDangerButton("Eliminar Evento");
+        JButton bAsis = ComponentFactory.createSuccessButton("Gestionar Asistentes");
+        JButton bRec = ComponentFactory.createWarningButton("Gestionar Recursos");
+        JButton bRep = ComponentFactory.createPrimaryButton("Generar Reporte");
+        JButton bSave = ComponentFactory.createSecondaryButton("Guardar Todo");
+
         bNew.addActionListener(this::onNew);
-        ActionCardButton bEdit = new ActionCardButton("  Editar Evento", IconKit.edit());
         bEdit.addActionListener(this::onEdit);
-        ActionCardButton bDel = new ActionCardButton("  Eliminar Evento", IconKit.trash());
         bDel.addActionListener(this::onDelete);
-        ActionCardButton bAsis = new ActionCardButton("  Gestionar Asistentes", IconKit.users());
         bAsis.addActionListener(e -> onAsistentes());
-        ActionCardButton bRec = new ActionCardButton("  Gestionar Recursos", IconKit.box());
         bRec.addActionListener(e -> onRecursos());
-        ActionCardButton bRep = new ActionCardButton("  Generar Reporte", IconKit.report());
         bRep.addActionListener(e -> onReporte());
-        ActionCardButton bSave = new ActionCardButton("  Guardar Todo", IconKit.save());
         bSave.addActionListener(e -> onGuardar());
 
-        // Botones sin búsqueda avanzada
+        // Botones de la sidebar
         JButton[] botones = {bNew, bEdit, bDel, bAsis, bRec, bRep, bSave};
         for (JButton b : botones) {
             b.setAlignmentX(Component.LEFT_ALIGNMENT);
-            b.setMaximumSize(new Dimension(220, 36));
+            b.setMaximumSize(new Dimension(220, AppStyle.BUTTON_HEIGHT));
             side.add(b);
             side.add(Box.createVerticalStrut(8));
         }
 
         // --- Barra inferior de estado ---
-        statusLabel = new JLabel();
+        statusLabel = ComponentFactory.createLabel("");
         statusLabel.setBorder(BorderFactory.createEmptyBorder(6, 10, 6, 10));
-        statusLabel.setFont(statusLabel.getFont().deriveFont(12f));
+        statusLabel.setFont(AppStyle.FONT_SMALL);
         updateStatus();
 
         // --- Atajos globales ---
@@ -299,15 +287,11 @@ public class MainFrame extends JFrame {
         sessionPanel.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
         sessionPanel.setBackground(new Color(245, 245, 245));
         
-        sessionLabel = new JLabel("Sesión: Invitado");
-        sessionLabel.setFont(sessionLabel.getFont().deriveFont(Font.BOLD, 12f));
-        sessionLabel.setForeground(new Color(70, 70, 70));
+        sessionLabel = ComponentFactory.createLabel("Sesión: Invitado");
+        sessionLabel.setFont(AppStyle.FONT_SMALL);
         
-        JButton btnLogout = new JButton("Cerrar sesión");
+        JButton btnLogout = ComponentFactory.createDangerButton("Cerrar sesión");
         btnLogout.setFont(btnLogout.getFont().deriveFont(11f));
-        btnLogout.setBackground(new Color(220, 80, 80));
-        btnLogout.setForeground(Color.WHITE);
-        btnLogout.setFocusPainted(false);
         btnLogout.addActionListener(e -> logout());
         
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));

@@ -49,7 +49,7 @@ public class RecursosEventoDialog extends JDialog {
     };
 
     public RecursosEventoDialog(Frame owner, SistemaEventos sistema, Evento evento) {
-        super(owner, "🎯 Gestión de Recursos - " + evento.getNombre(), true);
+        super(owner, " Gestión de Recursos - " + evento.getNombre(), true);
         this.sistema = sistema;
         this.evento = evento;
         initUI();
@@ -136,7 +136,7 @@ public class RecursosEventoDialog extends JDialog {
         panel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(BORDER_COLOR),
-                "📊 Lista de Recursos",
+                " Lista de Recursos",
                 TitledBorder.LEFT,
                 TitledBorder.TOP,
                 new Font("Segoe UI", Font.BOLD, 12),
@@ -151,7 +151,7 @@ public class RecursosEventoDialog extends JDialog {
         JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         toolbar.setBackground(Color.WHITE);
         
-        JLabel searchLabel = new JLabel("🔍 Buscar:");
+        JLabel searchLabel = new JLabel(" Buscar:");
         searchLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         toolbar.add(searchLabel);
         
@@ -167,7 +167,7 @@ public class RecursosEventoDialog extends JDialog {
         
         toolbar.add(Box.createHorizontalStrut(20));
         
-        JLabel filterLabel = new JLabel("📂 Filtrar:");
+        JLabel filterLabel = new JLabel(" Filtrar:");
         filterLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         toolbar.add(filterLabel);
         
@@ -227,7 +227,7 @@ public class RecursosEventoDialog extends JDialog {
         panel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(BORDER_COLOR),
-                "➕ Agregar Nuevo Recurso",
+                "+ Agregar Nuevo Recurso",
                 TitledBorder.LEFT,
                 TitledBorder.TOP,
                 new Font("Segoe UI", Font.BOLD, 12),
@@ -310,7 +310,7 @@ public class RecursosEventoDialog extends JDialog {
         panel.add(chkDisponible, gc);
 
         // Botón agregar
-        JButton btnAgregar = new JButton("➕ Agregar al Catálogo");
+        JButton btnAgregar = new JButton("+ Agregar al Catálogo");
         btnAgregar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnAgregar.setBackground(SUCCESS_COLOR);
         btnAgregar.setForeground(Color.WHITE);
@@ -332,9 +332,9 @@ public class RecursosEventoDialog extends JDialog {
         panel.setBackground(LIGHT_GRAY);
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         
-        JButton btnAsociar = createStyledButton("🔗 Asociar al Evento", SUCCESS_COLOR);
-        JButton btnQuitar = createStyledButton("🚫 Quitar del Evento", DANGER_COLOR);
-        JButton btnCerrar = createStyledButton("❌ Cerrar", new Color(120, 120, 120));
+        JButton btnAsociar = createStyledButton(" Asociar al Evento", SUCCESS_COLOR);
+        JButton btnQuitar = createStyledButton(" Quitar del Evento", DANGER_COLOR);
+        JButton btnCerrar = createStyledButton(" Cerrar", new Color(120, 120, 120));
 
         btnAsociar.addActionListener(e -> asociarRecurso());
         btnQuitar.addActionListener(e -> quitarRecurso());
@@ -375,7 +375,7 @@ public class RecursosEventoDialog extends JDialog {
 
         if (id.isEmpty() || nombre.isEmpty() || tipoEquipo.isEmpty()) {
             JOptionPane.showMessageDialog(this, 
-                "❌ ID, Nombre y Tipo son campos obligatorios.", 
+                " ID, Nombre y Tipo son campos obligatorios.", 
                 "Validación", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -383,9 +383,9 @@ public class RecursosEventoDialog extends JDialog {
         // Verificar ID duplicado
         for (Recurso r : sistema.getRecursosDisponibles()) {
             if (Objects.equals(r.getId(), id)) {
-                lblErrorId.setText("⚠️ Ya existe un recurso con este ID");
+                lblErrorId.setText(" Ya existe un recurso con este ID");
                 JOptionPane.showMessageDialog(this, 
-                    "⚠️ Ya existe un recurso con ese ID.", 
+                    " Ya existe un recurso con ese ID.", 
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -401,7 +401,7 @@ public class RecursosEventoDialog extends JDialog {
         limpiarFormulario();
         
         JOptionPane.showMessageDialog(this, 
-            "✅ Recurso agregado correctamente al catálogo.", 
+            " Recurso agregado correctamente al catálogo.", 
             "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -409,7 +409,7 @@ public class RecursosEventoDialog extends JDialog {
         int row = table.getSelectedRow();
         if (row < 0) {
             JOptionPane.showMessageDialog(this, 
-                "🔍 Seleccione un recurso de la tabla.", 
+                " Seleccione un recurso de la tabla.", 
                 "Selección Requerida", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -419,11 +419,11 @@ public class RecursosEventoDialog extends JDialog {
             sistema.asociarRecursoOrThrow(evento, recurso);
             loadResources();
             JOptionPane.showMessageDialog(this, 
-                "✅ Recurso asociado correctamente al evento.", 
+                " Recurso asociado correctamente al evento.", 
                 "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (RecursoOcupadoException ex) {
             JOptionPane.showMessageDialog(this, 
-                "❌ " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                " " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -431,7 +431,7 @@ public class RecursosEventoDialog extends JDialog {
         int row = table.getSelectedRow();
         if (row < 0) {
             JOptionPane.showMessageDialog(this, 
-                "🔍 Seleccione un recurso asociado al evento.", 
+                " Seleccione un recurso asociado al evento.", 
                 "Selección Requerida", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -440,7 +440,7 @@ public class RecursosEventoDialog extends JDialog {
         if (sistema.desasociarRecurso(evento, recurso.getId())) {
             loadResources();
             JOptionPane.showMessageDialog(this, 
-                "✅ Recurso desasociado correctamente del evento.", 
+                " Recurso desasociado correctamente del evento.", 
                 "Éxito", JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -482,9 +482,9 @@ public class RecursosEventoDialog extends JDialog {
                     case 2: return eq.getTipoEquipo();
                     case 3: 
                         return sistema.isRecursoDisponible(r, evento.getFecha(), evento.getHora()) ? 
-                               "✅ Disponible" : "❌ Ocupado";
+                               " Disponible" : " Ocupado";
                     case 4:
-                        return evento.getRecursos().contains(r) ? "✅ Sí" : "❌ No";
+                        return evento.getRecursos().contains(r) ? " Sí" : " No";
                     default: return "";
                 }
             }
@@ -494,3 +494,4 @@ public class RecursosEventoDialog extends JDialog {
         public Recurso getRecursoAt(int row) { return recursos.get(row); }
     }
 }
+
