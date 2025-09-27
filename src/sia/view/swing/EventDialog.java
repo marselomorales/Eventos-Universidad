@@ -506,58 +506,175 @@ public class EventDialog extends JDialog {
     }
 
     private void showTimeDialog() {
-        JDialog timeDialog = new JDialog(this, "Seleccionar Hora", true);
-        timeDialog.setLayout(new BorderLayout(10, 10));
-        timeDialog.setSize(250, 180);
-        timeDialog.setLocationRelativeTo(this);
-        timeDialog.getContentPane().setBackground(AppStyle.CARD_BG);
+    JDialog timeDialog = new JDialog(this, "Seleccionar Hora y Minutos", true);
+    timeDialog.setLayout(new BorderLayout(10, 10));
+    timeDialog.setSize(300, 300);
+    timeDialog.setLocationRelativeTo(this);
+    timeDialog.getContentPane().setBackground(AppStyle.CARD_BG);
 
-        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBackground(AppStyle.CARD_BG);
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+    JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+    mainPanel.setBackground(AppStyle.CARD_BG);
+    mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        // Panel del reloj
-        JPanel timePanel = new JPanel(new GridLayout(4, 3, 5, 5));
-        timePanel.setBackground(AppStyle.CARD_BG);
+    // Panel principal para horas y minutos
+    JPanel timeSelectionPanel = new JPanel(new GridLayout(2, 1, 5, 10));
+    timeSelectionPanel.setBackground(AppStyle.CARD_BG);
 
-        String[] hours = {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
-                         "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
+    // Panel para horas
+    JPanel hourPanel = new JPanel(new GridLayout(0, 6, 5, 5)); // 6 columnas
+    hourPanel.setBackground(AppStyle.CARD_BG);
+    hourPanel.setBorder(BorderFactory.createTitledBorder("Horas"));
+    
+    // Panel para minutos
+    JPanel minutePanel = new JPanel(new GridLayout(0, 6, 5, 5)); // 6 columnas
+    minutePanel.setBackground(AppStyle.CARD_BG);
+    minutePanel.setBorder(BorderFactory.createTitledBorder("Minutos"));
 
-        for (String hour : hours) {
-            JButton hourBtn = createTimeButton(hour);
-            hourBtn.addActionListener(e -> {
-                String selectedTime = hourBtn.getText() + ":00";
-                try {
-                    spHora.setValue(new SimpleDateFormat("HH:mm").parse(selectedTime));
-                    timeDialog.dispose();
-                } catch (Exception ex) {
-                    // Ignorar error
+    // Botones para horas (00-23)
+    for (int hour = 0; hour < 24; hour++) {
+        JButton hourBtn = createTimeButton(String.format("%02d", hour));
+        hourBtn.addActionListener(e -> {
+            // Resetear estilo de todos los botones de hora
+            for (Component comp : hourPanel.getComponents()) {
+                if (comp instanceof JButton) {
+                    comp.setBackground(Color.WHITE);
+                    comp.setForeground(Color.BLACK);
                 }
-            });
-            timePanel.add(hourBtn);
-        }
-
-        // Panel de botones
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.setBackground(AppStyle.CARD_BG);
-        
-        JButton cancelBtn = ComponentFactory.createSecondaryButton("Cancelar");
-        JButton okBtn = ComponentFactory.createPrimaryButton("Aceptar");
-        
-        buttonPanel.add(cancelBtn);
-        buttonPanel.add(okBtn);
-
-        mainPanel.add(new JLabel("Seleccione la hora:", SwingConstants.CENTER), BorderLayout.NORTH);
-        mainPanel.add(new JScrollPane(timePanel), BorderLayout.CENTER);
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-
-        timeDialog.add(mainPanel);
-
-        cancelBtn.addActionListener(e -> timeDialog.dispose());
-        okBtn.addActionListener(e -> timeDialog.dispose());
-
-        timeDialog.setVisible(true);
+            }
+            // Resaltar botón seleccionado
+            hourBtn.setBackground(AppStyle.PRIMARY);
+            hourBtn.setForeground(Color.WHITE);
+        });
+        hourPanel.add(hourBtn);
     }
+
+    // Botones para minutos (00-55, en incrementos de 5)
+    for (int minute = 0; minute < 60; minute += 5) {
+        JButton minuteBtn = createTimeButton(String.format("%02d", minute));
+        minuteBtn.addActionListener(e -> {
+            // Resetear estilo de todos los botones de minuto
+            for (Component comp : minutePanel.getComponents()) {
+                if (comp instanceof JButton) {
+                    comp.setBackground(Color.WHITE);
+                    comp.setForeground(Color.BLACK);
+                }
+            }
+            // Resaltar botón seleccionado
+            minuteBtn.setBackground(AppStyle.PRIMARY);
+            minuteBtn.setForeground(Color.WHITE);
+        });
+        minutePanel.add(minuteBtn);
+    }
+
+    timeSelectionPanel.add(hourPanel);
+    timeSelectionPanel.add(minutePanel);
+
+    // Panel de botones de acción
+    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    buttonPanel.setBackground(AppStyle.CARD_BG);
+    
+    JButton cancelBtn = ComponentFactory.createSecondaryButton("Cancelar");
+    JButton okBtn = ComponentFactory.createPrimaryButton("Aceptar");
+    
+    buttonPanel.add(cancelBtn);
+    buttonPanel.add(okBtn);
+
+    // Panel para mostrar la hora seleccionada
+    JLabel selectedTimeLabel = new JLabel("Hora seleccionada: --:--", SwingConstants.CENTER);
+    selectedTimeLabel.setFont(AppStyle.FONT_SUBTITLE);
+    selectedTimeLabel.setForeground(AppStyle.TEXT_PRIMARY);
+
+    mainPanel.add(selectedTimeLabel, BorderLayout.NORTH);
+    mainPanel.add(new JScrollPane(timeSelectionPanel), BorderLayout.CENTER);
+    mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+    timeDialog.add(mainPanel);
+
+    // Variables para almacenar la selección
+    final String[] selectedHour = {null};
+    final String[] selectedMinute = {null};
+
+    // Actualizar etiqueta cuando se selecciona hora o minuto
+    Runnable updateTimeLabel = () -> {
+        if (selectedHour[0] != null && selectedMinute[0] != null) {
+            selectedTimeLabel.setText("Hora seleccionada: " + selectedHour[0] + ":" + selectedMinute[0]);
+        } else if (selectedHour[0] != null) {
+            selectedTimeLabel.setText("Hora seleccionada: " + selectedHour[0] + ":--");
+        } else if (selectedMinute[0] != null) {
+            selectedTimeLabel.setText("Hora seleccionada: --:" + selectedMinute[0]);
+        } else {
+            selectedTimeLabel.setText("Hora seleccionada: --:--");
+        }
+    };
+
+    // Configurar action listeners para los botones de hora
+    for (Component comp : hourPanel.getComponents()) {
+        if (comp instanceof JButton) {
+            JButton btn = (JButton) comp;
+            btn.addActionListener(e -> {
+                selectedHour[0] = btn.getText();
+                updateTimeLabel.run();
+            });
+        }
+    }
+
+    // Configurar action listeners para los botones de minuto
+    for (Component comp : minutePanel.getComponents()) {
+        if (comp instanceof JButton) {
+            JButton btn = (JButton) comp;
+            btn.addActionListener(e -> {
+                selectedMinute[0] = btn.getText();
+                updateTimeLabel.run();
+            });
+        }
+    }
+
+    // Configurar hora actual como selección por defecto
+    Calendar now = Calendar.getInstance();
+    String currentHour = String.format("%02d", now.get(Calendar.HOUR_OF_DAY));
+    String currentMinute = String.format("%02d", (now.get(Calendar.MINUTE) / 5) * 5); // Redondear a múltiplo de 5
+    
+    // Seleccionar hora y minuto actuales
+    for (Component comp : hourPanel.getComponents()) {
+        if (comp instanceof JButton && ((JButton) comp).getText().equals(currentHour)) {
+            comp.setBackground(AppStyle.PRIMARY);
+            comp.setForeground(Color.WHITE);
+            selectedHour[0] = currentHour;
+        }
+    }
+    
+    for (Component comp : minutePanel.getComponents()) {
+        if (comp instanceof JButton && ((JButton) comp).getText().equals(currentMinute)) {
+            comp.setBackground(AppStyle.PRIMARY);
+            comp.setForeground(Color.WHITE);
+            selectedMinute[0] = currentMinute;
+        }
+    }
+    
+    updateTimeLabel.run();
+
+    cancelBtn.addActionListener(e -> timeDialog.dispose());
+
+    okBtn.addActionListener(e -> {
+        if (selectedHour[0] != null && selectedMinute[0] != null) {
+            try {
+                String selectedTime = selectedHour[0] + ":" + selectedMinute[0];
+                spHora.setValue(new SimpleDateFormat("HH:mm").parse(selectedTime));
+                timeDialog.dispose();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(timeDialog, 
+                    "Error al establecer la hora: " + ex.getMessage(), 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(timeDialog, 
+                "Por favor seleccione hora y minutos", 
+                "Selección incompleta", JOptionPane.WARNING_MESSAGE);
+        }
+    });
+
+    timeDialog.setVisible(true);
+}
 
     private JButton createTimeButton(String text) {
         JButton btn = new JButton(text);
