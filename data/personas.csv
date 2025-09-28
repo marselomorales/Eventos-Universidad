@@ -14,3 +14,88 @@ Estudiante;A112;Miguel Ángel Reyes;miguel.reyes@universidad.edu;Arquitectura;4;
 Profesor;A113;Natalia Vargas;natalia.vargas@universidad.edu;;;Química;Asistente
 Estudiante;A114;Óscar Torres;oscar.torres@universidad.edu;Administración;2;;
 Profesor;A115;Patricia Ruiz;patricia.ruiz@universidad.edu;;;Historia;Titular
+Estudiante;A116;Ricardo Mora;ricardo.mora@universidad.edu;Periodismo;1;;
+Profesor;A117;Sofía Herrera;sofia.herrera@universidad.edu;;;Computación;Titular
+Estudiante;A118;Tomás Rojas;tomas.rojas@universidad.edu;Ingeniería Eléctrica;3;;
+Estudiante;A119;Valentina Pizarro;valentina.pizarro@universidad.edu;Diseño;2;;
+Profesor;A120;Carlos Fuentes;carlos.fuentes@universidad.edu;;;Biología;Asociado
+Estudiante;A121;Daniela Sepúlveda;daniela.sepulveda@universidad.edu;Enfermería;4;;
+Estudiante;A122;Luis González;luis.gonzalez@universidad.edu;Agronomía;2;;
+Profesor;A123;María José Soto;maria.soto@universidad.edu;;;Arte;Titular
+Estudiante;A124;Pablo Mendoza;pablo.mendoza@universidad.edu;Filosofía;1;;
+Estudiante;A125;Camila Vega;camila.vega@universidad.edu;Veterinaria;3;;
+Estudiante;A126;Andrés Castillo;andres.castillo@universidad.edu;Ingeniería Mecánica;2;;
+Profesor;A127;Claudia Ríos;claudia.rios@universidad.edu;;;Psicología;Asociado
+Estudiante;A128;Diego Morales;diego.morales@universidad.edu;Contabilidad;1;;
+Estudiante;A129;Florencia Jara;florencia.jara@universidad.edu;Pedagogía;3;;
+Profesor;A130;Gabriel Soto;gabriel.soto@universidad.edu;;;Economía;Titular
+Estudiante;A131;Hugo Peña;hugo.pena@universidad.edu;Ingeniería Química;4;;
+Estudiante;A132;Irene Medina;irene.medina@universidad.edu;Derecho;2;;
+Profesor;A133;Jorge Silva;jorge.silva@universidad.edu;;;Medicina;Titular
+Estudiante;A134;Karen Orellana;karen.orellana@universidad.edu;Arquitectura;3;;
+Estudiante;A135;Leonardo Muñoz;leonardo.munoz@universidad.edu;Biología;1;;
+Profesor;A136;Marcela Torres;marcela.torres@universidad.edu;;;Filosofía;Asistente
+Estudiante;A137;Nicolás Vargas;nicolas.vargas@universidad.edu;Ingeniería Civil;4;;
+Estudiante;A138;Olivia Riquelme;olivia.riquelme@universidad.edu;Periodismo;2;;
+Profesor;A139;Pablo Contreras;pablo.contreras@universidad.edu;;;Derecho;Titular
+Estudiante;A140;Quintín Reyes;quintin.reyes@universidad.edu;Medicina;3;;
+Estudiante;A141;Rocío Méndez;rocio.mendez@universidad.edu;Psicología;4;;
+Profesor;A142;Sebastián Lagos;sebastian.lagos@universidad.edu;;;Ingeniería;Asociado
+Estudiante;A143;Tamara Fuentes;tamara.fuentes@universidad.edu;Arte;1;;
+Estudiante;A144;Ulises Mora;ulises.mora@universidad.edu;Economía;3;;
+Profesor;A145;Verónica Díaz;veronica.diaz@universidad.edu;;;Historia;Asistente
+Estudiante;A146;Walter Rojas;walter.rojas@universidad.edu;Computación;2;;
+Estudiante;A147;Ximena Paredes;ximena.paredes@universidad.edu;Enfermería;4;;
+Profesor;A148;Yerko Silva;yerko.silva@universidad.edu;;;Matemáticas;Titular
+Estudiante;A149;Zoe Mendoza;zoe.mendoza@universidad.edu;Diseño;1;;
+Estudiante;A150;Álvaro Torres;alvaro.torres@universidad.edu;Agronomía;3;;
+Estudiante;A151;Bárbara Soto;barbara.soto@universidad.edu;Pedagogía;2;;
+Profesor;A152;César López;cesar.lopez@universidad.edu;;;Física;Titular
+Estudiante;A153;Diana Morales;diana.morales@universidad.edu;Contabilidad;4;;
+Estudiante;A154;Ernesto Jara;ernesto.jara@universidad.edu;Ingeniería Eléctrica;1;;
+Profesor;A155;Fabiola Ríos;fabiola.rios@universidad.edu;;;Química;Asociado
+Estudiante;A156;Gustavo Peña;gustavo.pena@universidad.edu;Medicina;2;;
+Estudiante;A157;Helena Medina;helena.medina@universidad.edu;Derecho;3;;
+Profesor;A158;Ignacio Silva;ignacio.silva@universidad.edu;;;Literatura;Titular
+Estudiante;A159;Iris Orellana;iris.orellana@universidad.edu;Arquitectura;4;;
+Estudiante;A160;Jacobo Muñoz;jacobo.munoz@universidad.edu;Biología;1;;
+Estudiante;A161;Katherine Torres;katherine.torres@universidad.edu;Filosofía;2;;
+Profesor;A162;Luis Vargas;luis.vargas@universidad.edu;;;Computación;Asistente
+Estudiante;A163;Marta Riquelme;marta.riquelme@universidad.edu;Ingeniería Civil;3;;
+Estudiante;A164;Néstor Contreras;nestor.contreras@universidad.edu;Periodismo;4;;
+Profesor;A165;Octavio Reyes;octavio.reyes@universidad.edu;;;Economía;Titular
+Estudiante;A166;Paula Méndez;paula.mendez@universidad.edu;Psicología;1;;
+Estudiante;A167;Querubín Lagos;querubin.lagos@universidad.edu;Arte;2;;
+Profesor;A168;Rosa Fuentes;rosa.fuentes@universidad.edu;;;Ingeniería;Asociado
+Estudiante;A169;Samuel Mora;samuel.mora@universidad.edu;Historia;3;;
+Estudiante;A170;Tania Rojas;tania.rojas@universidad.edu;Computación;4;;
+Estudiante;A171;Umberto Paredes;umberto.paredes@universidad.edu;Enfermería;1;;
+Profesor;A172;Vanessa Silva;vanessa.silva@universidad.edu;;;Matemáticas;Titular
+Estudiante;A173;Wendy Mendoza;wendy.mendoza@universidad.edu;Diseño;2;;
+Estudiante;A174;Xavier Torres;xavier.torres@universidad.edu;Agronomía;3;;
+Profesor;A175;Yolanda Soto;yolanda.soto@universidad.edu;;;Pedagogía;Asistente
+Estudiante;A176;Zacarías López;zacarias.lopez@universidad.edu;Contabilidad;4;;
+Estudiante;A177;Amanda Morales;amanda.morales@universidad.edu;Ingeniería Eléctrica;1;;
+Profesor;A178;Benito Jara;benito.jara@universidad.edu;;;Medicina;Titular
+Estudiante;A179;Celeste Ríos;celeste.rios@universidad.edu;Derecho;2;;
+Estudiante;A180;Damián Peña;damian.pena@universidad.edu;Arquitectura;3;;
+Estudiante;A181;Eugenia Medina;eugenia.medina@universidad.edu;Biología;4;;
+Profesor;A182;Felipe Silva;felipe.silva@universidad.edu;;;Filosofía;Asociado
+Estudiante;A183;Gloria Orellana;gloria.orellana@universidad.edu;Ingeniería Civil;1;;
+Estudiante;A184;Hernán Muñoz;hernan.munoz@universidad.edu;Periodismo;2;;
+Profesor;A185;Ivana Torres;ivana.torres@universidad.edu;;;Psicología;Titular
+Estudiante;A186;Joaquín Vargas;joaquin.vargas@universidad.edu;Arte;3;;
+Estudiante;A187;Karina Riquelme;karina.riquelme@universidad.edu;Economía;4;;
+Profesor;A188;Lorenzo Contreras;lorenzo.contreras@universidad.edu;;;Historia;Asistente
+Estudiante;A189;Mariano Reyes;mariano.reyes@universidad.edu;Computación;1;;
+Estudiante;A190;Nadia Méndez;nadia.mendez@universidad.edu;Enfermería;2;;
+Estudiante;A191;Oscar Lagos;oscar.lagos@universidad.edu;Matemáticas;3;;
+Profesor;A192;Penélope Fuentes;penelope.fuentes@universidad.edu;;;Diseño;Titular
+Estudiante;A193;Quirino Mora;quirino.mora@universidad.edu;Agronomía;4;;
+Estudiante;A194;Rebeca Rojas;rebeca.rojas@universidad.edu;Pedagogía;1;;
+Profesor;A195;Salvador Paredes;salvador.paredes@universidad.edu;;;Contabilidad;Asociado
+Estudiante;A196;Tadeo Silva;tadeo.silva@universidad.edu;Ingeniería Eléctrica;2;;
+Estudiante;A197;Úrsula Mendoza;ursula.mendoza@universidad.edu;Medicina;3;;
+Profesor;A198;Víctor Torres;victor.torres@universidad.edu;;;Derecho;Titular
+Estudiante;A199;Wanda Soto;wanda.soto@universidad.edu;Arquitectura;4;;
+Estudiante;A200;Ximena López;ximena.lopez@universidad.edu;Biología;1;;
