@@ -14,3 +14,74 @@ Equipo;E004;Pizarra Interactiva;;;;true
 Equipo;E006;Tabletas Gráficas;;;;true
 Equipo;E008;Pantalla LED;;;;true
 Equipo;48593485;parlantovichgodric;;;Sistema de Sonido;true
+Sala;S006;Laboratorio de Química;40;Edificio F;;true
+Equipo;E010;VR Oculus Quest 3;;;Realidad Virtual;true
+Sala;S007;Sala de Música;25;Edificio G;;true
+Equipo;E011;Drone DJI Mini 3;;;Grabación Aérea;true
+Equipo;E012;Kit de Robótica Arduino;;;Electrónica;true
+Sala;S008;Galería de Arte;80;Edificio H;;true
+Equipo;E013;Cámara Fotográfica Profesional;;;;true
+Sala;S009;Teatro Universitario;250;Edificio I;;true
+Equipo;E014;Mixer de Audio;;;;true
+Sala;S010;Sala de Debate;50;Edificio J;;true
+Equipo;E015;Tablet Samsung Galaxy;;;;true
+Sala;S011;Laboratorio de Física;35;Edificio K;;true
+Equipo;E016;Impresora 3D;;;;true
+Sala;S012;Aula Virtual;60;Edificio L;;true
+Equipo;E017;Escáner 3D;;;;true
+Sala;S013;Sala de Estudio Grupal;20;Edificio M;;true
+Equipo;E018;Micrófono de Estudio;;;;true
+Sala;S014;Laboratorio de Idiomas;30;Edificio N;;true
+Equipo;E019;Cámara de Video 4K;;;;true
+Sala;S015;Sala de Exposiciones;100;Edificio O;;true
+Equipo;E020;Proyector Láser;;;;true
+Sala;S016;Auditorio Pequeño;150;Edificio P;;true
+Equipo;E021;Consola de Mezcla;;;;true
+Sala;S017;Laboratorio de Biología;40;Edificio Q;;true
+Equipo;E022;Kit de Electrónica;;;;true
+Sala;S018;Sala de Conferencias VIP;30;Edificio R;;true
+Equipo;E023;Tablet Apple iPad;;;;true
+Sala;S019;Aula Magna 2;180;Edificio S;;true
+Equipo;E024;Micrófono Lavalier;;;;true
+Sala;S020;Laboratorio de Computación Avanzada;25;Edificio T;;true
+Equipo;E025;Cámara DSLR;;;;true
+Sala;S021;Sala de Proyecciones 3D;70;Edificio U;;true
+Equipo;E026;Proyector Portátil;;;;true
+Sala;S022;Laboratorio de Robótica;35;Edificio V;;true
+Equipo;E027;Drone Phantom;;;;true
+Sala;S023;Sala de Música 2;20;Edificio W;;true
+Equipo;E028;Consola de DJ;;;;true
+Sala;S024;Aula de Dibujo;25;Edificio X;;true
+Equipo;E029;Tablet Wacom;;;;true
+Sala;S025;Laboratorio de Química Avanzada;30;Edificio Y;;true
+Equipo;E030;Cámara 360;;;;true
+Sala;S026;Sala de Exámenes;50;Edificio Z;;true
+Equipo;E031;Proyector Interactivo;;;;true
+Sala;S027;Laboratorio de Computación 3;30;Edificio A1;;true
+Equipo;E032;Micrófono de Solapa;;;;true
+Sala;S028;Aula de Postgrado;40;Edificio B1;;true
+Equipo;E033;Cámara GoPro;;;;true
+Sala;S029;Sala de Conferencias Internacional;80;Edificio C1;;true
+Equipo;E034;Tablet Microsoft Surface;;;;true
+Sala;S030;Laboratorio de Física Avanzada;25;Edificio D1;;true
+Equipo;E035;Proyector 8K;;;;true
+Sala;S031;Sala de Estudio Individual;1;Edificio E1;;true
+Equipo;E036;Mixer de Video;;;;true
+Sala;S032;Laboratorio de Idiomas Avanzado;20;Edificio F1;;true
+Equipo;E037;Cámara de Documentos;;;;true
+Sala;S033;Aula de Música;15;Edificio G1;;true
+Equipo;E038;Micrófono USB;;;;true
+Sala;S034;Sala de Exposiciones 2;90;Edificio H1;;true
+Equipo;E039;Proyector Mini;;;;true
+Sala;S035;Laboratorio de Biología Molecular;25;Edificio I1;;true
+Equipo;E040;Tablet Lenovo;;;;true
+Sala;S036;Auditorio de Ciencias;200;Edificio J1;;true
+Equipo;E041;Cámara de Seguridad;;;;true
+Sala;S037;Sala de Conferencias 3;60;Edificio K1;;true
+Equipo;E042;Proyector de Alta Luminosidad;;;;true
+Sala;S038;Laboratorio de Computación 4;35;Edificio L1;;true
+Equipo;E043;Micrófono Inalámbrico Profesional;;;;true
+Sala;S039;Aula de Arte;30;Edificio M1;;true
+Equipo;E044;Tablet Huawei;;;;true
+Sala;S040;Sala de Proyecciones 4K;50;Edificio N1;;true
+Equipo;E045;Cámara Web 4K;;;;true
