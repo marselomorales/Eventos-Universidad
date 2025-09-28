@@ -145,7 +145,7 @@ public class LoginFrame extends JFrame {
         JPanel footerPanel = new JPanel();
         footerPanel.setBackground(new Color(240, 240, 240));
         footerPanel.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
-        JLabel footerLabel = new JLabel("Sistema de Gestión de Eventos Universitarios v1.0 • © 2024");
+        JLabel footerLabel = new JLabel("Sistema de Gestión de Eventos Universitarios • © 2025");
         footerLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         footerLabel.setForeground(TEXT_SECONDARY);
         footerPanel.add(footerLabel);
