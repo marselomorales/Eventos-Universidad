@@ -14,3 +14,48 @@ E112;Maratón de Programación;competencia;2025-11-12;09:00;Lab-5;50
 E113;Charla de Innovación Tecnológica;charla;2025-11-18;15:00;B-302;60
 E114;Festival de Cine;cultural;2025-11-25;19:00;Sala de Proyecciones;80
 E115;Simposio de Investigación;academico;2025-12-02;10:00;Auditorio;200
+E116;Hackathon de FinTech;competencia;2025-12-05;09:00;Lab-6;40
+E117;Charla de Realidad Virtual;charla;2025-12-08;16:00;B-305;35
+E118;Taller de Python Básico;taller;2025-12-10;14:00;Lab-2;20
+E119;Concierto de Jazz;cultural;2025-12-12;20:00;Auditorio;180
+E120;Seminario de Bioingeniería;seminario;2025-12-15;11:00;A-102;70
+E121;Workshop de Machine Learning;taller;2026-01-10;10:00;Lab-7;25
+E122;Charla de Blockchain;charla;2026-01-15;15:00;B-401;45
+E123;Exposición de Fotografía;cultural;2026-01-20;16:00;Galería Este;60
+E124;Congreso de Medicina;academico;2026-01-25;09:00;Auditorio Central;300
+E125;Taller de React Native;taller;2026-02-05;14:00;Lab-3;30
+E126;Festival de Teatro;cultural;2026-02-12;19:00;Teatro Univ;250
+E127;Competencia de Debate;debate;2026-02-18;10:00;Sala Debate;50
+E128;Charla de IoT;charla;2026-02-25;11:00;B-205;40
+E129;Maratón de Datos;competencia;2026-03-03;09:00;Lab-4;35
+E130;Seminario de Psicología;seminario;2026-03-10;16:00;A-301;80
+E131;Workshop de UX/UI;taller;2026-03-15;14:00;Lab-6;20
+E132;Concierto de Coro;cultural;2026-03-20;18:00;Auditorio;150
+E133;Charla de Cloud Computing;charla;2026-03-25;15:00;B-304;55
+E134;Feria de Ciencias;feria;2026-04-05;10:00;Patio Ciencias;400
+E135;Taller de Docker;taller;2026-04-12;13:00;Lab-5;25
+E136;Simposio de Literatura;academico;2026-04-18;11:00;Sala Letras;90
+E137;Competencia de Robótica;competencia;2026-04-25;09:00;Lab Robótica;40
+E138;Charla de DevOps;charla;2026-05-06;16:00;B-402;50
+E139;Festival de Danza;cultural;2026-05-12;19:00;Teatro;200
+E140;Workshop de Big Data;taller;2026-05-20;14:00;Lab-8;30
+E141;Congreso de Ingeniería;academico;2026-05-25;09:00;Auditorio Ing;350
+E142;Charla de Ciberseguridad;charla;2026-06-03;15:00;B-306;60
+E143;Maratón de Innovación;competencia;2026-06-10;10:00;Lab Innovación;45
+E144;Taller de Angular;taller;2026-06-17;14:00;Lab-3;25
+E145;Exposición de Escultura;cultural;2026-06-24;16:00;Galería Norte;70
+E146;Seminario de Economía;seminario;2026-07-01;11:00;A-202;85
+E147;Workshop de Vue.js;taller;2026-07-08;13:00;Lab-7;20
+E148;Charla de Realidad Aumentada;charla;2026-07-15;15:00;B-308;40
+E149;Competencia de Programación;competencia;2026-07-22;09:00;Lab-5;35
+E150;Festival de Música;cultural;2026-07-29;19:00;Auditorio;300
+E151;Taller de Node.js;taller;2026-08-05;14:00;Lab-4;30
+E152;Congreso de Derecho;academico;2026-08-12;10:00;Auditorio Derecho;200
+E153;Charla de Machine Learning;charla;2026-08-19;16:00;B-310;50
+E154;Maratón de Emprendimiento;competencia;2026-08-26;09:00;Lab Emprende;40
+E155;Workshop de Spring Boot;taller;2026-09-02;14:00;Lab-6;25
+E156;Exposición de Pintura;cultural;2026-09-09;17:00;Galería Sur;60
+E157;Seminario de Filosofía;seminario;2026-09-16;11:00;A-303;75
+E158;Charla de Deep Learning;charla;2026-09-23;15:00;B-312;45
+E159;Competencia de Debate;debate;2026-09-30;10:00;Sala Debate;50
+E160;Festival de Cortometrajes;cultural;2026-10-07;19:00;Cine Univ;120
